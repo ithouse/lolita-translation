@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
     "lib/lolita-translation/rails.rb",
     "lib/lolita-translation/string.rb",
     "lib/tasks/has_translations_tasks.rake",
+    "lolita-translation.gemspec",
     "lolita-translations.gemspec",
     "spec/has_translations_spec.rb",
     "spec/spec.opts",
