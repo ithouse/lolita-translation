@@ -1,0 +1,78 @@
+<% if @object.new_record? %>
+  <p>Tulkošana iespējama tikai eksistējošiem ierakstiem.</p>
+<% else %>
+  <div class="managed-create-line">
+    <span class="brick"><%= t "fields.language" %></span>
+    <div class="fl">
+      <%= select_tag :has_translations_locale, options_for_select([""] + I18n.available_locales.clone.delete_if{|l| l == I18n.default_locale}), :onchange => "switch_has_translations_language($(this))" %>
+    </div>
+  </div>
+  <div id="has_translations_fields" style="display: none">
+    <% @object.class.columns_has_translations.each do |column| %>
+      <div class="managed-create-line">
+        <span class="brick"><%= @object.class.human_attribute_name(column.name) %></span>
+        <div class="fl">
+          <% if column.type == :string %>
+            <%= text_field_tag 'has_translations_' + column.name, nil, :class => 'txt' %>
+          <% elsif column.type == :text %>
+            <%= text_area_tag 'has_translations_' + column.name, nil, :class => "textarea" %>
+            <script type="text/javascript">
+              tinyMCE.execCommand('mceRemoveControl', false,'has_translations_<%= column.name %>');
+              tinyMCE.execCommand('mceAddControl', false,'has_translations_<%= column.name %>');
+            </script>
+            <br /><br />
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+  <div></div>
+  <% @object.build_nested_translations %>
+  <% object_form.fields_for :translations do |tf| %>
+    <div id="object_translation_fields_<%= tf.object.locale %>">
+      <% @object.class.columns_has_translations.each do |column| %>
+        <%= tf.hidden_field column.name, :class => column.name %>
+      <% end %>
+      <%= tf.hidden_field :id, :class => "id" %>
+      <%= tf.hidden_field tf.object.class.master_id, :value => @object.id %>
+      <%= tf.hidden_field :locale, :class => "locale" %>
+    </div>
+  <% end %>
+  <script type="text/javascript">
+    var columns = <%= @object.class.columns_has_translations.map(&:name).inspect %>;
+    var blur = false;
+    function switch_has_translations_language(select){
+      var locale = select.val();
+      if(locale == ""){
+        $('#has_translations_fields').hide()
+      }else{
+        $.each(columns,function(i,column){
+          var content = $('#object_translation_fields_'+locale+' .'+column).val();
+          $('#has_translations_'+column).val(content);
+          if($('#has_translations_'+column).get(0).tagName == 'TEXTAREA'){
+            tinymce.EditorManager.getInstanceById('has_translations_'+column).setContent(content);
+          }
+        });
+        $('#has_translations_fields').show()
+      }
+      if(!blur){
+        $.each($('#has_translations_fields textarea'), function(i,area){
+          var item = $(area);
+          var tiny_editor = tinymce.EditorManager.getInstanceById(item.attr("id"));
+          tinymce.dom.Event.add(tiny_editor.getWin(), "blur", function(){
+            var textarea = $(tinymce.EditorManager.getInstanceById(item.attr("id")).getElement());
+            tiny_editor.save();
+            textarea.blur();
+          });
+        });
+        blur = true;
+      }
+    }
+    $.each(columns,function(i,column){
+      $('#has_translations_'+column).blur(function(){
+        $('#object_translation_fields_'+$("#has_translations_locale").val()+' .'+$(this).attr("name").split("_")[2]).val($(this).val())
+      })
+    })
+  </script>
+<% end %>

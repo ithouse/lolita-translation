@@ -1,0 +1,8 @@
+en:
+  lolita:
+    tabs:
+      titles:
+        translation: Translation
+      translation:
+        fields:
+          language: Language
