@@ -69,7 +69,8 @@
     }
     $.each(columns,function(i,column){
       $('#has_translations_'+column).blur(function(){
-        $('#object_translation_fields_'+$("#has_translations_locale").val()+' .'+$(this).attr("name").split("_")[2]).val($(this).val())
+        alert('#object_translation_fields_'+$("#has_translations_locale").val()+' .'+column)
+        $('#object_translation_fields_'+$("#has_translations_locale").val()+' .'+column).val($(this).val())
       })
     })
   </script>
