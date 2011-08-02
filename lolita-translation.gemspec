@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita-translation}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Gatis Tomsons", "Arturs Meisters"]
-  s.date = %q{2011-08-01}
+  s.date = %q{2011-08-02}
   s.description = %q{Translates models in Lolita}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
