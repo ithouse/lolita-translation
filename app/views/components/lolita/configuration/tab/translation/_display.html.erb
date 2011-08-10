@@ -1,5 +1,5 @@
 <% if resource.new_record? %>
-  <p>-</p>
+  <form "#"><%= t('lolita.tabs.translation.only-update') %></form>
 <% else %>
   <form "#">
     <div class="tab-content">
@@ -17,7 +17,7 @@
             <% if column.type == :string %>
               <%= text_field_tag 'has_translations_' + column.name, nil, :class => 'txt' %>
             <% elsif column.type == :text %>
-              <%= text_area_tag 'has_translations_' + column.name, nil, :class => "textarea",:rows=>20, :cols=>40 %>
+              <%= text_area_tag 'has_translations_' + column.name, nil,:rows=>20, :cols=>40 %>
             <% end %>
           </div>
         <% end %>
@@ -50,6 +50,8 @@
           $('#has_translations_'+column).val(content);
           if($('#has_translations_'+column).get(0).tagName == 'TEXTAREA'){
             tinymce.EditorManager.getInstanceById('has_translations_'+column).setContent(content);
+            $('#has_translations_'+column+'_tbl').css('width','100%').css('height','250px');
+            $('#has_translations_'+column+'_ifr').css('width','100%').css('height','250px');
           }
         });
         $('#has_translations_fields').show()
