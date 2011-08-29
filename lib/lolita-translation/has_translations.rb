@@ -264,6 +264,10 @@ class ActiveRecord::Base
       end
     end
 
+    @translation_attrs = attrs
+    def self.translation_attrs
+      @translation_attrs
+    end
     has_many :translations, :class_name => translation_class_name, :foreign_key => translation_class.master_id, :dependent => :destroy
     accepts_nested_attributes_for :translations, :allow_destroy => true, :reject_if => proc { |attributes| columns_has_translations.collect{|col| attributes[col.name].blank? ? nil : 1}.compact.empty? }
     translation_class.belongs_to belongs_to

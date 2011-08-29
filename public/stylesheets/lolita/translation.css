@@ -1,0 +1,18 @@
+.tab-language-switch{
+  float: right;
+  overflow: hidden;
+  list-style: none;
+  margin-right: 25px;
+  margin-top: 28px;
+}
+.tab-language-switch li{
+  float:left;
+  margin-left:10px;
+  color: #C3C3C3;
+  cursor:pointer;
+}
+.tab-language-switch li.active{
+  color: #444;
+  font-weight: bold;
+  cursor:default;
+}
