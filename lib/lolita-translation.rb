@@ -14,6 +14,8 @@ module Lolita
         resource.build_nested_translations 
         nested_form = Lolita::Configuration::NestedForm.new(tab,:translations) 
         nested_form.expandable = false
+        nested_form.field_style = :normal
+        
         fields = tab.fields.reject{|field|
           !resource.class.translation_attrs.include?(field.name.to_sym)
         }
