@@ -1,0 +1,9 @@
+lv:
+  lolita:
+    tabs:
+      titles:
+        translation: Tulkojums
+      translation:
+        fields:
+          language: Valoda
+        only-update: "Tulkot iespējams tikai pēc saglabāšanas."

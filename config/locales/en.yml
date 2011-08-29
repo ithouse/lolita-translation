@@ -6,3 +6,4 @@ en:
       translation:
         fields:
           language: Language
+        only-update: "Translation is possible only after save."

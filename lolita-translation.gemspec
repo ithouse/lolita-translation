@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita-translation}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Gatis Tomsons", "Arturs Meisters"]
-  s.date = %q{2011-08-02}
+  s.date = %q{2011-08-10}
   s.description = %q{Translates models in Lolita}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -24,8 +24,8 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "app/views/components/lolita/configuration/tab/translation/_display.html.erb",
-    "app/views/lolita/has_translations/_tab.html.erb",
     "config/locales/en.yml",
+    "config/locales/lv.yml",
     "lib/generators/lolita_translation/USAGE",
     "lib/generators/lolita_translation/has_translations_generator.rb",
     "lib/lolita-translation.rb",
