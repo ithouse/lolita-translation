@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita-translation}
-  s.version = "0.0.4"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["ITHouse", "Gatis Tomsons", "Arturs Meisters"]
-  s.date = %q{2011-08-10}
+  s.authors = [%q{ITHouse}, %q{Gatis Tomsons}, %q{Arturs Meisters}]
+  s.date = %q{2011-08-29}
   s.description = %q{Translates models in Lolita}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -23,27 +23,31 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "app/views/components/lolita/configuration/tab/translation/_display.html.erb",
+    "app/views/components/lolita/translation/_assets.html.erb",
+    "app/views/components/lolita/translation/_language_wrap.html.erb",
+    "app/views/components/lolita/translation/_switch.html.erb",
     "config/locales/en.yml",
     "config/locales/lv.yml",
     "lib/generators/lolita_translation/USAGE",
+    "lib/generators/lolita_translation/assets_generator.rb",
     "lib/generators/lolita_translation/has_translations_generator.rb",
+    "lib/generators/lolita_translation/install_generator.rb",
     "lib/lolita-translation.rb",
-    "lib/lolita-translation/configuration/tab/translation.rb",
     "lib/lolita-translation/has_translations.rb",
     "lib/lolita-translation/rails.rb",
     "lib/lolita-translation/string.rb",
     "lib/tasks/has_translations_tasks.rake",
     "lolita-translation.gemspec",
-    "lolita-translations.gemspec",
+    "public/javascripts/lolita/translation.js",
+    "public/stylesheets/lolita/translation.css",
     "spec/has_translations_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/ithouse/lolita-translations}
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
+  s.licenses = [%q{MIT}]
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.8}
   s.summary = %q{Lolita models translation plugin}
   s.test_files = [
     "spec/has_translations_spec.rb",
