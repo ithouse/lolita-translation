@@ -9,8 +9,7 @@
 ### Usage
     
 1. Call `translations :title, :body` in your model and pass column names to translate.
-2. Add `tab :translation` into `lolita do ....` block to see the translation tab.
-3. Add `Article.sync_translation_table!` to your `db/seeds.rb` and run it.
+2. Add `Article.sync_translation_table!` to your `db/seeds.rb` and run it.
 
 ### Examples
 
