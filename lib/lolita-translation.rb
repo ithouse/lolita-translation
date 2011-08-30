@@ -46,6 +46,8 @@ Lolita::Hooks.component(:"/lolita/configuration/tab/fields").around do
   tab = self.component_locals[:tab]
   if Lolita::Translation.translatable?(tab)
     self.send(:render_component,"lolita/translation",:language_wrap,:tab => tab, :content => let_content)
+  else
+    let_content
   end
 end
 
@@ -53,6 +55,8 @@ Lolita::Hooks.component(:"/lolita/configuration/nested_form/fields").around do
   tab = self.component_locals[:nested_form].parent
   if Lolita::Translation.translatable?(tab)
     self.send(:render_component,"lolita/translation",:language_wrap, :tab => tab, :content => let_content)
+  else
+    let_content
   end
 end
 
