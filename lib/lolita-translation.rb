@@ -7,8 +7,11 @@ module Lolita
   module Translation
     class << self
       def translatable?(tab)
+        fields = tab.fields.reject{|field|
+          field.dbi!=tab.dbi
+        } 
         tab.dbi.klass.respond_to?(:translation_attrs) &&
-        tab.dbi.klass.respond_to?(:translations) && (tab.fields.map(&:name) & tab.dbi.klass.translation_attrs).any?
+        tab.dbi.klass.respond_to?(:translations) && (fields.map(&:name) & tab.dbi.klass.translation_attrs).any?
       end
 
       def create_translations_nested_form(resource,tab)
