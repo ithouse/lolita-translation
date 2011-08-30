@@ -7,6 +7,7 @@ module Lolita
   module Translation
     class << self
       def translatable?(tab)
+        tab.dbi.klass.respond_to?(:translation_attrs) &&
         tab.dbi.klass.respond_to?(:translations) && (tab.fields.map(&:name) & tab.dbi.klass.translation_attrs).any?
       end
 
