@@ -28,6 +28,8 @@ module Lolita
   end
 end
 
+Lolita.add_module Lolita::Translation
+
 Lolita::Hooks.component(:"/lolita/configuration/tab/form").before do
   tab = self.component_locals[:tab]
   if Lolita::Translation.translatable?(tab)

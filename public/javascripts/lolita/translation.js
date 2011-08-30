@@ -1,5 +1,5 @@
 $(function(){
-  $(".tab-language-switch li").click(function(){
+  $(".tab-language-switch li").live("click",function(){
     $(".tab-language-switch li").removeClass("active")
     $(this).addClass("active");
     var locale = $(this).attr("data-locale")
