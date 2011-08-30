@@ -3,7 +3,8 @@
   overflow: hidden;
   list-style: none;
   margin-right: 25px;
-  margin-top: 28px;
+  top: 28px;
+	position: relative;
 }
 .tab-language-switch li{
   float:left;
