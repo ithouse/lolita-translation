@@ -5,6 +5,11 @@ require 'lolita-translation/rails'
 
 module Lolita
   module Translation
+
+    def self.included(base_class)
+      base_class.extend(Lolita::Translation::SingletonMethods)
+    end
+
     class << self
       def translatable?(tab)
         fields = tab.fields.reject{|field|
@@ -23,7 +28,7 @@ module Lolita
         fields = tab.fields.reject{|field|
           !resource.class.translation_attrs.include?(field.name.to_sym)
         }
-        fields << Lolita::Configuration::Field.add(nested_form.dbi,:locale,:hidden)
+        fields << Lolita::Configuration::Factory::Field.add(nested_form.dbi,:locale,:hidden)
         nested_form.fields=fields
         nested_form
       end
