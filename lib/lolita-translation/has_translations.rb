@@ -130,7 +130,7 @@ module Lolita
           def self.translation_attrs
             @translation_attrs
           end
-          adapter = Lolita::DBI::Base.create(self)
+          #adapter = Lolita::DBI::Base.create(self)
           has_many :translations, :class_name => translation_class_name, :foreign_key => translation_class.master_id, :dependent => :destroy
           accepts_nested_attributes_for :translations, :allow_destroy => true, :reject_if => proc { |attributes| columns_has_translations.collect{|col| attributes[col.name].blank? ? nil : 1}.compact.empty? }
           translation_class.belongs_to belongs_to
@@ -145,7 +145,17 @@ module Lolita
           }
 
           class << self
-            alias_method(:find_without_translations, :find) unless method_defined?(:find_without_translations)
+
+            def find_with_translations(*args,&block)
+              unless I18n.locale == I18n.default_locale
+                if args && args[0].kind_of?(Hash)
+                  args[0][:include] ||=[]
+                  args[0][:include] << :translations
+                end
+              end
+              find_without_translations *args, &block
+            end
+            alias_method_chain :find, :translations
           end
 
         end
@@ -155,13 +165,14 @@ module Lolita
     module ClassMethods
       # adds :translations to :includes if current locale differs from default
       #FIXME is this enough with find or need to create chain for find_last, find_first and others?
-      def find(*args)
-        if args[0].kind_of?(Hash)
-          args[0][:include] ||= []
-          args[0][:include] << :translations
-        end unless I18n.locale == I18n.default_locale
-        find_without_translations(*args)
-      end
+      # def find(*args)
+      #   if args[0].kind_of?(Hash)
+      #     args[0][:include] ||= []
+      #     args[0][:include] << :translations
+      #   end unless I18n.locale == I18n.default_locale
+      #   find_without_translations(*args)
+      # end
+
       # Defines given class recursively
       # Example:
       # create_class('Cms::Text::Page', Object, ActiveRecord::Base)
@@ -194,7 +205,7 @@ module Lolita
             end
             # set's real table name
             translation_adapter = Lolita::DBI::Base.create(self)
-            translation_adapter.collection_name = adapter.collection_name.to_s.singularize + "_translations"
+            translation_adapter.collection_name = adapter.collection_name.to_s.singularize + "_translation"
            
             cattr_accessor :translate_attrs, :master_id
 
@@ -243,7 +254,7 @@ module Lolita
         translations_class = self.reflect_on_association(:translations).klass
         translations_adapter = Lolita::DBI::Base.create(translations_class)
 
-        if translations_adaper.dbi.adapter_name == :active_record
+        if translations_adapter.dbi.adapter_name == :active_record
           translations_table = translations_adapter.collection_name
 
           unless ActiveRecord::Migration::table_exists?(translations_table)
