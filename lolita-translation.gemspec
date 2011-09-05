@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{lolita-translation}
-  s.version = "0.1.4"
+  s.name = "lolita-translation"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{ITHouse}, %q{Gatis Tomsons}, %q{Arturs Meisters}]
-  s.date = %q{2011-09-01}
-  s.description = %q{Translates models in Lolita}
-  s.email = %q{support@ithouse.lv}
+  s.authors = ["ITHouse", "Gatis Tomsons", "Arturs Meisters"]
+  s.date = "2011-09-05"
+  s.description = "Translates models in Lolita"
+  s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -23,32 +23,32 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "app/assets/.gitkeep",
+    "app/assets/javascripts/.gitkeep",
+    "app/assets/javascripts/lolita/translation.js",
+    "app/assets/stylesheets/lolita/translation.css",
     "app/views/components/lolita/translation/_assets.html.erb",
     "app/views/components/lolita/translation/_language_wrap.html.erb",
     "app/views/components/lolita/translation/_switch.html.erb",
     "config/locales/en.yml",
     "config/locales/lv.yml",
     "lib/generators/lolita_translation/USAGE",
-    "lib/generators/lolita_translation/assets_generator.rb",
     "lib/generators/lolita_translation/has_translations_generator.rb",
-    "lib/generators/lolita_translation/install_generator.rb",
     "lib/lolita-translation.rb",
     "lib/lolita-translation/has_translations.rb",
     "lib/lolita-translation/rails.rb",
     "lib/lolita-translation/string.rb",
     "lib/tasks/has_translations_tasks.rake",
     "lolita-translation.gemspec",
-    "public/javascripts/lolita/translation.js",
-    "public/stylesheets/lolita/translation.css",
     "spec/has_translations_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/ithouse/lolita-translations}
-  s.licenses = [%q{MIT}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.8}
-  s.summary = %q{Lolita models translation plugin}
+  s.homepage = "http://github.com/ithouse/lolita-translations"
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.10"
+  s.summary = "Lolita models translation plugin"
   s.test_files = [
     "spec/has_translations_spec.rb",
     "spec/spec_helper.rb"
@@ -59,22 +59,22 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rails>, ["~> 3.1.0"])
-      s.add_runtime_dependency(%q<lolita>, ["~> 3.2.0"])
+      s.add_runtime_dependency(%q<lolita>, ["~> 3.2.0.rc1"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 3.1.0"])
-      s.add_dependency(%q<lolita>, ["~> 3.2.0"])
+      s.add_dependency(%q<lolita>, ["~> 3.2.0.rc1"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rcov>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rails>, [">= 3.0.0"])
-    s.add_dependency(%q<lolita>, ["~> 3.1.15"])
+    s.add_dependency(%q<rails>, ["~> 3.1.0"])
+    s.add_dependency(%q<lolita>, ["~> 3.2.0.rc1"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
