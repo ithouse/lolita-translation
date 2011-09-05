@@ -81,6 +81,7 @@ module Lolita
       # <tt>all_translations</tt> method that returns all possible translations in
       # ordered hash (useful when creating forms with nested attributes).
       def translations *attrs
+        include Lolita::Translation::InstanceMethods
         options = {
           :fallback => true,
           :reader => true,
@@ -193,7 +194,7 @@ module Lolita
             end
             # set's real table name
             translation_adapter = Lolita::DBI::Base.create(self)
-            translation_adapter.collection_name = adapter.collection_name.to_s.singularize + "_translation"
+            translation_adapter.collection_name = adapter.collection_name.to_s.singularize + "_translations"
            
             cattr_accessor :translate_attrs, :master_id
 
