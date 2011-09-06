@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "lolita-translation"
-  s.version = "0.2.3"
+  s.version = "0.2.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Gatis Tomsons", "Arturs Meisters"]
@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
     "VERSION",
     "app/assets/.gitkeep",
     "app/assets/javascripts/.gitkeep",
-    "app/assets/javascripts/lolita/translation.js",
-    "app/assets/stylesheets/lolita/translation.css",
+    "app/assets/javascripts/lolita/translation/application.js",
+    "app/assets/stylesheets/lolita/translation/application.css",
     "app/views/components/lolita/translation/_assets.html.erb",
     "app/views/components/lolita/translation/_language_wrap.html.erb",
     "app/views/components/lolita/translation/_switch.html.erb",
