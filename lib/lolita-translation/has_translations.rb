@@ -197,7 +197,6 @@ module Lolita
       def define_translation_class name, attrs
         klass = name.constantize rescue nil
         adapter = Lolita::DBI::Base.create(self)
-
         unless klass
           klass = create_class(name, Object, get_orm_class(adapter)) do
             if adapter.dbi.adapter_name == :mongoid
@@ -209,6 +208,17 @@ module Lolita
            
             cattr_accessor :translate_attrs, :master_id
 
+            # before friendly_id 4.x
+            if adapter.klass.respond_to?(:uses_friendly_id?) && adapter.klass.send(:uses_friendly_id?)
+              parent_config = adapter.klass.friendly_id_config
+              has_friendly_id parent_config.method,
+                :allow_nil => parent_config.allow_nil,
+                :approximate_ascii => parent_config.approximate_ascii,
+                :max_length => parent_config.max_length,
+                :reserved_words => parent_config.reserved_words,
+                :use_slug => parent_config.use_slug
+            end
+            
             # override validate to vaidate only translate fields from master Class
             def validate
               item = self.class.name.sub('Translation','').constantize.new(self.attributes.clone.delete_if{|k,_| !self.class.translate_attrs.include?(k.to_sym)})
