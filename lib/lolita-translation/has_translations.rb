@@ -88,11 +88,11 @@ module Lolita
           :writer => false,
           :nil => ''
         }.merge(attrs.extract_options!)
-        options.assert_valid_keys([:fallback, :reader, :writer, :nil])
+        options.assert_valid_keys([:fallback, :reader, :writer, :nil,:table_name])
         self.extend(Lolita::Translation::ClassMethods)
         self.class_eval do
           translation_class_name = "#{self.name}Translation"
-          translation_class = self.define_translation_class(translation_class_name, attrs)
+          translation_class = self.define_translation_class(translation_class_name, attrs,options)
           belongs_to = self.name.demodulize.underscore.to_sym
 
           write_inheritable_attribute :has_translations_options, options
@@ -194,7 +194,7 @@ module Lolita
       end
 
       # defines "ModelNameTranslation" if it's not defined manualy
-      def define_translation_class name, attrs
+      def define_translation_class name, attrs, options = {}
         klass = name.constantize rescue nil
         adapter = Lolita::DBI::Base.create(self)
         unless klass
@@ -204,7 +204,7 @@ module Lolita
             end
             # set's real table name
             translation_adapter = Lolita::DBI::Base.create(self)
-            translation_adapter.collection_name = adapter.collection_name.to_s.singularize + "_translation"
+            translation_adapter.collection_name = options[:table_name] || adapter.collection_name.to_s.singularize + "_translation"
            
             cattr_accessor :translate_attrs, :master_id
 
