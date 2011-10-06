@@ -104,8 +104,8 @@ module Lolita
           if options[:reader]
             attrs.each do |name|
               send :define_method, name do
-                unless I18n.default_locale == I18n.locale
-                  translation = self.translation(I18n.locale)
+                unless ::I18n.default_locale == ::I18n.locale
+                  translation = self.translation(::I18n.locale)
                   if translation.nil?
                     if has_translations_options[:fallback]
                       (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].set_origins(self,name)
@@ -147,7 +147,7 @@ module Lolita
           class << self
 
             def find_with_translations(*args,&block)
-              unless I18n.locale == I18n.default_locale
+              unless ::I18n.locale == ::I18n.default_locale
                 if args && args[0].kind_of?(Hash)
                   args[0][:include] ||=[]
                   args[0][:include] << :translations
@@ -325,7 +325,7 @@ module Lolita
       # a.in(:en).title
       # => "EN title"
       def in locale
-        locale.to_sym == I18n.default_locale ? self : find_translation(locale)
+        locale.to_sym == ::I18n.default_locale ? self : find_translation(locale)
       end
       
       def find_or_build_translation(*args)
@@ -339,21 +339,21 @@ module Lolita
       end
 
       def all_translations
-        t = I18n.available_locales.map do |locale|
+        t = ::I18n.available_locales.map do |locale|
           [locale, find_or_build_translation(locale)]
         end
         ActiveSupport::OrderedHash[t]
       end
 
       def has_translation?(locale)
-        return true if locale == I18n.default_locale
+        return true if locale == ::I18n.default_locale
         find_translation(locale).present?
       end
 
       # if object is new, then nested slaves ar built for all available locales
       def build_nested_translations
-        if (I18n.available_locales.size - 1) > self.translations.size
-          I18n.available_locales.clone.delete_if{|l| l == I18n.default_locale}.each do |l|
+        if (::I18n.available_locales.size - 1) > self.translations.size
+          ::I18n.available_locales.clone.delete_if{|l| l == ::I18n.default_locale}.each do |l|
             options = {:locale => l.to_s}
             self_adapter = Lolita::DBI::Base.create(self.class)
             options[self_adapter.reflect_on_association(:translations).klass.master_id] = self.id unless self.new_record?
