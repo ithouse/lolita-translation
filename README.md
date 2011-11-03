@@ -8,8 +8,9 @@
 
 ### Usage
     
-1. Call `translations :title, :body` in your model and pass column names to translate.
-2. Add `Article.sync_translation_table!` to your `db/seeds.rb` and run it.
+1. Add `include Lolita::Translation` in your model.
+2. Call `translations :title, :body` in your model and pass column names to translate.
+3. Add `Article.sync_translation_table!` to your `db/seeds.rb` and run it.
 
 #### What it does?
 In Lolita, each tab, that contains at least on field, that needs to be translated, is changed to translatable tab.

@@ -211,9 +211,11 @@ module Lolita
             # before friendly_id 4.x
             if adapter.klass.respond_to?(:uses_friendly_id?) && adapter.klass.send(:uses_friendly_id?)
               parent_config = adapter.klass.friendly_id_config
+          
               has_friendly_id parent_config.method,
                 :allow_nil => parent_config.allow_nil,
                 :approximate_ascii => parent_config.approximate_ascii,
+                :ascii_approximation_options => [:russian],
                 :max_length => parent_config.max_length,
                 :reserved_words => parent_config.reserved_words,
                 :use_slug => parent_config.use_slug
