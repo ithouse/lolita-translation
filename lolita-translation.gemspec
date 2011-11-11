@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".rspec",
     "Gemfile",
     "LICENSE.txt",
     "README.md",
@@ -42,8 +43,8 @@ Gem::Specification.new do |s|
     "lib/lolita-translation/string.rb",
     "lib/tasks/has_translations_tasks.rake",
     "lolita-translation.gemspec",
+    "spec/database.log",
     "spec/has_translations_spec.rb",
-    "spec/spec.opts",
     "spec/spec_helper.rb"
   ]
   s.homepage = "http://github.com/ithouse/lolita-translations"
