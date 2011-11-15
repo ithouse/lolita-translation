@@ -104,8 +104,8 @@ module Lolita
         config = self
         @klass.class_eval do
     
-          class_attribute :has_translation_options
-          self.has_translation_options = config.options
+          class_attribute :has_translations_options
+          self.has_translations_options = config.options
 
           class_attribute :columns_has_translations
           self.columns_has_translations = (columns rescue []).collect{|col| col if config.attrs.include?(col.name.to_sym)}.compact

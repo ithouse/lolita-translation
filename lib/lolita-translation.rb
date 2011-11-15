@@ -16,6 +16,7 @@ module Lolita
     end
 
     class << self
+      # Determine whether tab is translatable. When there is one or more fields in tab, that are defined with #translates.
       def translatable?(tab)
         fields = tab.fields.reject{|field|
           field.dbi!=tab.dbi
@@ -24,6 +25,7 @@ module Lolita
         tab.dbi.klass.respond_to?(:translations) && (fields.map(&:name) & tab.dbi.klass.translation_attrs).any?
       end
 
+      # Create nested form configuration for views.
       def create_translations_nested_form(resource,tab)
         resource.build_nested_translations 
         nested_form = Lolita::Configuration::NestedForm.new(tab,:translations) 
