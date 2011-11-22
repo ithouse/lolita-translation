@@ -71,7 +71,7 @@ module Lolita
             end
             # set's real table name
             translation_adapter = Lolita::DBI::Base.create(self)
-            translation_adapter.collection_name = config.options[:table_name] || translation_model.adapter.collection_name.to_s.singularize + "_translation"
+            translation_adapter.collection_name = config.options[:table_name] || translation_model.adapter.collection_name.to_s + "_translations"
            
             cattr_accessor :translate_attrs, :master_id
 
