@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Gatis Tomsons", "Arturs Meisters"]
-  s.date = "2011-11-15"
+  s.date = "2011-11-22"
   s.description = "Translates models in Lolita"
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
