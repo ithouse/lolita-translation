@@ -81,6 +81,10 @@ module Lolita
       # ordered hash (useful when creating forms with nested attributes).
       def translations *attrs
         @config ||= Lolita::Translation::Configuration.new(self,*attrs)
+        if block_given?
+          yield @config
+        end
+        @config
       end
     end
 
