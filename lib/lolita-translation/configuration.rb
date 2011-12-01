@@ -80,11 +80,11 @@ module Lolita
       # <tt>all_translations</tt> method that returns all possible translations in
       # ordered hash (useful when creating forms with nested attributes).
       def translations *attrs
-        @config ||= Lolita::Translation::Configuration.new(self,*attrs)
+        @translations_config ||= Lolita::Translation::Configuration.new(self,*attrs)
         if block_given?
-          yield @config
+          yield @translations_config
         end
-        @config
+        @translations_config
       end
     end
 
