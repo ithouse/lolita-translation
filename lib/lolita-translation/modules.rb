@@ -34,7 +34,7 @@ module Lolita
                 t.send(col.type,col.name)
               end
             end
-            ActiveRecord::Migration.add_index translations_table, [translations_class.master_id, :locale], :unique => true
+            ActiveRecord::Migration.add_index translations_table, [translations_class.master_id, :locale], :unique => true, :name => "#{self_adapter.collection_name}_master"
             translations_class.reset_column_information
           else
             changes = false
