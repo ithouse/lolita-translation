@@ -23,8 +23,8 @@ module Lolita
       # override validate to vaidate only translate fields from master Class
       def validate
         item = self.class.name.sub('Translation','').constantize.new(self.attributes.clone.delete_if{|k,_| !self.class.translate_attrs.include?(k.to_sym)})
-        item_adapter = Lolita::DBI::Adapter.add(item.class)
-        self_adapter = Lolita::DBI::Adapter.add(self)
+        item_adapter = Lolita::DBI::Base.create(item.class)
+        self_adapter = Lolita::DBI::Base.create(self.class)
         was_table_name = item_adapter.collection_name
         item_adapter.collection_name = self_adapter.collection_name
         item.valid? rescue
