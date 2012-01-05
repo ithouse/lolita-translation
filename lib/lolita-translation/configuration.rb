@@ -151,18 +151,18 @@ module Lolita
             translation = self.translation(::I18n.locale)
               if translation.nil?
                 if has_translations_options[:fallback]
-                  (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].set_origins(self,name)                    else
+                  (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].to_s.set_origins(self,name)                    else
                 has_translations_options[:nil]
               end
             else
               if @return_raw_data
-                (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].set_origins(self,name)
+                (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].to_s.set_origins(self,name)
               else
-                value = translation.send(name) and value.set_origins(self,name)
+                value = translation.send(name) and value.to_s.set_origins(self,name)
               end
             end
           else
-            (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].set_origins(self,name)
+            (self[name].nil? || self[name].blank?) ? has_translations_options[:nil] : self[name].to_s.set_origins(self,name)
           end
         end
       end
