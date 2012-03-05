@@ -1,6 +1,5 @@
 
 require 'lolita'
-require 'lolita-translation/string.rb'
 require 'lolita-translation/modules'
 require 'lolita-translation/model'
 require 'lolita-translation/configuration'
