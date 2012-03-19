@@ -4,7 +4,7 @@ module LolitaTranslation
   end
 end
 
-Lolita::Hooks.component(:"/lolita/configuration/tab/form").before do
+Lolita::Hooks.component(:"/lolita/configuration/tab/error_msg").before do
   tab = self.component_locals[:tab]
   if Lolita::Translation.translatable?(tab)
     self.send(:render_component,"lolita/translation",:switch, :tab => tab)

@@ -6,5 +6,6 @@ $(function(){
     var tab_name = $(this).attr("data-tab")
     $(".tab-content .language-wrap").hide(0)
     $("#"+locale+"_attributes_for_"+tab_name).show(0)
+    resize_all_tinymce_editors()
   })
 })

@@ -3,7 +3,7 @@
   overflow: hidden;
   list-style: none;
   margin-right: 25px;
-  top: 28px;
+  margin-top: -10px;
 	position: relative;
 }
 .tab-language-switch li{
