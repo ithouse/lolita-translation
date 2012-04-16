@@ -34,7 +34,7 @@ module Lolita
         fields = tab.fields.reject{|field|
           !resource.class.translation_attrs.include?(field.name.to_sym)
         }
-        fields << Lolita::Configuration::Factory::Field.add(nested_form.dbi,:locale,:hidden)
+        fields << Lolita::Configuration::Factory::Field.add(nested_form.dbi,:locale,:string, :builder => :hidden)
         nested_form.fields=fields
         nested_form
       end
