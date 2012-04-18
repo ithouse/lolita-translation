@@ -74,6 +74,7 @@ module Lolita
             translation_adapter.collection_name = config.options[:table_name] || translation_model.adapter.collection_name.to_s + "_translations"
            
             cattr_accessor :translate_attrs, :master_id
+            attr_accessible :locale, :text_page_id
 
             include Lolita::Translation::ModelInstanceMethods
             extend Lolita::Translation::ModelClassMethods
