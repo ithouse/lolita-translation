@@ -79,6 +79,7 @@ module Lolita
             include Lolita::Translation::ModelInstanceMethods
             extend Lolita::Translation::ModelClassMethods
         end
+        new_klass.class_eval %(attr_accessible #{@config.attrs.collect{|i| ":#{i}"}.join(',')})
         new_klass.translate_attrs = @config.attrs
         new_klass
       end
