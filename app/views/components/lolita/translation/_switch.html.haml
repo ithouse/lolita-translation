@@ -1,6 +1,6 @@
 %ul{:class => "tab-language-switch", :id => "#{tab.name}_language_switch"}
   - ::I18n.available_locales.sort.each do |short_locale|
-    - active = ::I18n.default_locale == short_locale
+    - active = ::I18n.locale == short_locale
     %li{:class => active && "active" || "", :"data-locale" => short_locale, :"data-tab" => tab.name}
       = short_locale.to_s.capitalize
 .clear

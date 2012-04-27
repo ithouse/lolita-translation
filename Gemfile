@@ -1,19 +1,15 @@
-source "http://rubygems.org"
+source :rubygems
 
-gem "lolita", ">=3.2.0.rc.3"
-group :development do
-  gem "shoulda", ">= 0"
-  gem "bundler", "~> 1.0.0"
-  gem "jeweler", "~> 1.5.2"
-  gem "rcov", ">= 0"
-end
+gem 'lolita', :path=>File.expand_path('../../lolita',__FILE__)
+gemspec
 
-group :test do
-  gem "rails", "~>3.1.0"
-  gem "rspec","~>2.6.0"
-  gem "rspec-rails", "~>2.6.0"
-  gem "webmock", "~> 1.7.6"
-  gem "sqlite3"
-  gem "ffaker"
-  gem 'ruby-debug19', :require => 'ruby-debug'
-end
+gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
+  gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
+  gem 'ruby-debug19'
+# group :test,:development do
+#   gem "rails", "~>3.2.3"
+#   gem "rspec", "~>2.9.0"
+#   gem "rspec-rails", "~>2.9.0"
+#   gem "sqlite3"
+#   gem "ffaker"
+# end
