@@ -1,4 +1,0 @@
-<% locale = current_form.object.respond_to?(:locale) ? current_form.object.locale : ::I18n.locale %>
-<div class="language-wrap" id="<%=locale%>_attributes_for_<%= tab.name %>" style="display:<%=locale == ::I18n.locale ? "block" : "none"%>">
-  <%= content %>
-</div>

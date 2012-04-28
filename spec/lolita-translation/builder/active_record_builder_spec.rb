@@ -1,10 +1,12 @@
 require 'header'
 require 'ar_schema'
 require File.expand_path("lib/lolita-translation/builder/active_record_builder")
+ARSchema.connect!
 
 describe Lolita::Translation::Builder::ActiveRecordBuilder do 
   let(:klass) { Lolita::Translation::Builder::ActiveRecordBuilder }
   before(:each) do 
+    Object.send(:remove_const, :Product) if Object.const_defined?(:Product)
     a_klass = Class.new(ActiveRecord::Base)
     Object.const_set(:Product, a_klass)
   end
@@ -22,6 +24,7 @@ describe Lolita::Translation::Builder::ActiveRecordBuilder do
 
   it "should call class methods on klass" do 
     obj = klass.new(Product)
+    obj.stub(:association_name).and_return(:product)
     obj.build_klass
     obj.call_klass_class_methods
     obj.klass.reflections.keys.should include(:product)
@@ -29,6 +32,7 @@ describe Lolita::Translation::Builder::ActiveRecordBuilder do
 
   it "should update base class" do
     obj = klass.new(Product)
+    obj.stub(:translations_association_name).and_return(:translations)
     obj.build_klass
     obj.update_base_klass
     Product.reflections.keys.should include(:translations)

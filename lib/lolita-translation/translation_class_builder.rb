@@ -1,5 +1,7 @@
 require 'lolita-translation/builder/active_record_builder'
 require 'lolita-translation/builder/mongoid_builder'
+require 'lolita-translation/utils'
+
 module Lolita
   module Translation
 
@@ -9,8 +11,9 @@ module Lolita
 
       attr_reader :klass
 
-      def initialize(base_class) 
-        @klass = base_class
+      def initialize(base_class, configuration = nil) 
+        @klass          = base_class
+        @configuration  = configuration
         detect_builder_class
       end
 
@@ -19,7 +22,7 @@ module Lolita
       end
 
       def builder
-        @builder ||= @builder_class && @builder_class.new(klass)
+        @builder ||= @builder_class && @builder_class.new(klass, @configuration)
       end
 
       def build_class
@@ -44,9 +47,9 @@ module Lolita
       private
 
       def detect_builder_class
-        @builder_class ||= if defined?(ActiveRecord::Base) && klass.ancestors.include?(ActiveRecord::Base)
+        @builder_class ||= if Lolita::Translation::Utils.active_record_class?(klass)
           Lolita::Translation::Builder::ActiveRecordBuilder
-        elsif defined?(Mongoid::Document) && klass.ancestors.include?(Mongoid::Document)
+        elsif Lolita::Translation::Utils.mongoid_class?(klass)
           Lolita::Translation::Builder::MongoidBuilder
         else
           nil

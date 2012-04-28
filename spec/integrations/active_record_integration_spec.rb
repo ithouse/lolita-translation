@@ -46,7 +46,7 @@ describe "Integration with ActiveRecord" do
   end
 
   context "record" do 
-    let(:category){Category.create(:name => "category_name", :default_locale => :en)}
+    let(:category){Category.create(:name => "category_name", :default_locale => "en")}
 
     before(:each) do 
       Object.send(:remove_const, :Category) rescue nil
@@ -64,9 +64,9 @@ describe "Integration with ActiveRecord" do
     end
 
     it "should have default locale" do 
-      category = Category.create(:name => Faker::Name.first_name, :default_locale => :en)
+      category = Category.create(:name => Faker::Name.first_name, :default_locale => "en")
       I18n.default_locale = :lv
-      category.default_locale.should eq(:en)
+      category.original_locale.should eq("en")
     end
 
     it "should have translations" do 
@@ -128,9 +128,9 @@ describe "Integration with ActiveRecord" do
     end
 
     it "should save locale for record if it accepts it" do 
-      I18n.default_locale = :lv
-      category.default_locale.should eq(:en)
-      product.default_locale.should eq(:lv)
+      I18n.locale = :lv
+      category.original_locale.should eq(:en)
+      product.original_locale.should eq(:lv)
     end
 
     it "should not save translation for record default locale" do
@@ -163,6 +163,29 @@ describe "Integration with ActiveRecord" do
       transl2 = category.translations.create(:name => "translation-lv", :locale => "lv")
       transl1.errors.should be_empty
       transl2.errors.keys.should eq([:"locale"])
+    end
+  end
+
+  context "migrating" do 
+    before(:each) do 
+      Object.send(:remove_const,:Comment) rescue nil
+      c_class = Class.new(ActiveRecord::Base)
+      Object.const_set(:Comment,c_class)
+      c_class.class_eval do 
+        include Lolita::Translation
+        translate :body
+      end
+      ActiveRecord::Base.connection.execute("DROP TABLE comments_translations") rescue nil
+    end
+
+    after(:each) do 
+      Object.send(:remove_const,:Comment) rescue nil
+    end
+
+    it "should sync translation table through migrations" do 
+      ActiveRecord::Base.connection.tables.should_not include("comments_translations")
+      Comment.sync_translation_table!
+      ActiveRecord::Base.connection.tables.should include("comments_translations")
     end
   end
 end

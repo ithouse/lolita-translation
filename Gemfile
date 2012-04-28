@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'lolita', :path=>File.expand_path('../../lolita',__FILE__)
 gemspec
+gem "rake"
 
 gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
   gem 'ruby-debug-base19x', '~> 0.11.30.pre4'

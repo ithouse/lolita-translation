@@ -7,8 +7,6 @@ module Lolita
         def translate *args, &block
           @translations_configuration ||= Lolita::Translation::Configuration.new(self,*args,&block)
         end
-        # Backward compability
-        alias :translations :translate
 
         def translations_configuration
           unless @translations_configuration
@@ -18,19 +16,29 @@ module Lolita
           end
         end
 
-        def translations_table_name
-          translations_configuration.table_name
+        def sync_translation_table!
+          migrator = Lolita::Translation::Migrator.create(self)
+          migrator.migrate
         end
+
       end
 
       module InstanceMethods
 
-        def translation_record
-          @translation_record ||= Lolita::Translation::Record.new(self)
+        def translations_configuration
+          self.class.translations_configuration
         end
 
-        def default_locale
+        def translation_record
+          @translation_record ||= Lolita::Translation::Record.new(self, translations_configuration)
+        end
+
+        def original_locale
           translation_record.default_locale
+        end
+
+        def build_nested_translations
+          translation_record.build_nested_translations
         end
 
       end

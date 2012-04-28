@@ -77,7 +77,13 @@ class ARSchema
         t.string  :title
         t.string  :body
         t.integer :post_id
+        t.string  :locale
       end
+
+      create_table :comments, :force => true do |t|
+        t.text  :body
+        t.string  :commenter
+      end 
       ::ARSchema.loading = false
     end
   end

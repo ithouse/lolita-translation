@@ -26,10 +26,10 @@ describe Lolita::Translation::ORM do
       expect{
         klass.translations_configuration
       }.to raise_error(Lolita::Translation::ConfigurationNotInitializedError)
-    end
+    end 
 
-    it "should provide #translations_table_name to class" do 
-      klass.should respond_to(:translations_table_name)
+    it "should provide #sync_translation_table!" do 
+      klass.should respond_to(:sync_translation_table!)
     end  
   end
 
@@ -39,9 +39,9 @@ describe Lolita::Translation::ORM do
       obj.should respond_to(:translation_record)
     end 
 
-    it "should provide #default_locale" do 
+    it "should provide #original_locale" do 
       obj = klass.new
-      obj.should respond_to(:default_locale)
+      obj.should respond_to(:original_locale)
     end
   end
 end

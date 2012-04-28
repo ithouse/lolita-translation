@@ -5,7 +5,7 @@ $(function(){
     var locale = $(this).data("locale")
     var tab_name = $(this).data("tab")
     $(".tab-content .language-wrap").hide(0)
-    $("#"+locale+"_attributes_for_"+tab_name).show(0)
+    $("#"+locale+"_for_"+tab_name).show(0)
     resize_all_tinymce_editors()
   })
 })

@@ -5,8 +5,9 @@ module Lolita
       class AbstractBuilder
         attr_reader :base_klass, :klass
 
-        def initialize(base_class)
-          @base_klass = base_class
+        def initialize(base_class, configuration = nil)
+          @base_klass     = base_class
+          @configuration  = configuration
         end
 
         def class_name
@@ -43,7 +44,31 @@ module Lolita
           end
         end 
 
+        def association_name
+          @configuration && @configuration.demodulized_class_name
+        end
+
+        def association_key
+          @configuration && @configuration.association_key
+        end
+
+        def translations_association_name
+          @configuration && @configuration.association_name
+        end
+
+        def locale_field_name
+          @configuration && @configuration.locale_field_name
+        end
+
+        def table_name
+          @configuration && @configuration.table_name
+        end
+
         private
+
+        def configuration_attributes
+          @configuration && @configuration.attributes
+        end
 
         def validate_attribute_method_and_attribute(method_name, attribute)
           raise ArgumentError.new("#{method_name} is not valid attribute reader name") unless method_name

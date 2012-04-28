@@ -11,9 +11,9 @@ module Lolita
         end
 
         def call_klass_class_methods
+          add_ar_klass_class_methods
           add_ar_klass_associations
           add_ar_klass_validations
-          add_ar_klass_class_methods
         end
 
         def update_base_klass
@@ -31,18 +31,6 @@ module Lolita
           super(expanded_attributes)
         end
 
-        def association_name
-          base_klass.to_s.demodulize.underscore.to_sym
-        end
-
-        def association_key
-          :"#{association_name}_id"
-        end
-
-        def table_name
-          base_klass.translations_table_name || "#{base_klass.table_name}_translations"
-        end
-
         private
 
         def default_attributes
@@ -56,7 +44,7 @@ module Lolita
         end
 
         def add_ar_klass_associations
-          klass.belongs_to association_name, :inverse_of => :translations
+          klass.belongs_to association_name, :inverse_of => translations_association_name
         end
 
         def add_ar_klass_validations
@@ -85,22 +73,24 @@ module Lolita
         end
 
         def call_base_klass_class_methods
-          ar_translation_builder = self
-          base_klass.class_eval do 
-            has_many(:translations, {
-              :class_name => ar_translation_builder.class_name, 
-              :foreign_key => ar_translation_builder.association_key, 
-              :dependent => :destroy,
-              :inverse_of => ar_translation_builder.association_name
-            })
-            accepts_nested_attributes_for :translations, :allow_destroy => true
-          end
+          base_klass.has_many(translations_association_name, {
+            :class_name => class_name, 
+            :foreign_key => association_key, 
+            :dependent => :destroy,
+            :inverse_of => association_name
+          })
+          base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
+        end
 
+        def nested_attributes_rejection_proc
+          Proc.new{|attrs|
+            !configuration_attributes.detect{|attr| !attrs[attr].blank? }
+          }
         end
 
         def add_validations_to_base_klass
           if base_klass.column_names.include?("default_locale")
-            base_klass.validates :default_locale, :presence => true
+            base_klass.validates locale_field_name, :presence => true
           end
         end
 

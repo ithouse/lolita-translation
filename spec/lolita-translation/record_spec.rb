@@ -15,7 +15,7 @@ describe Lolita::Translation::Record do
 
     it "should have #locale" do 
       rec = abr_klass.new(double)
-      rec.locale.should eq(::I18n.default_locale)
+      rec.locale.should eq(::I18n.locale)
     end
   end
 
@@ -33,7 +33,7 @@ describe Lolita::Translation::Record do
     end
 
     it "should use default locale when there isn't field for that" do 
-      I18n.default_locale = :lv
+      I18n.locale = :lv
       ar_record = double("ar")
       ar_class = double("AR")
       ar_record.stub(:class).and_return(ar_class)
@@ -51,7 +51,22 @@ describe Lolita::Translation::Record do
 
   it "should have default locale" do 
     some_obj = double
-    klass.new(some_obj).default_locale.should eq(::I18n.default_locale)
+    klass.new(some_obj).default_locale.should eq(::I18n.locale)
+  end
+
+  it "should build nested translations" do 
+    ::I18n.available_locales = [:lv,:ru]
+    I18n.locale = :lv
+    rec = double("record")
+    rec.stub(:id).and_return(1)
+
+    translations = double("translations")
+    translations.should_receive(:build).with({:locale => "ru", :record_id => 1})
+    rec.stub(:translations).and_return(translations)
+
+    obj = klass.new(rec)
+    obj.orm_wrapper.stub(:association_key).and_return(:record_id)
+    obj.build_nested_translations
   end
 
 end

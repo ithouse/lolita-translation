@@ -9,7 +9,7 @@ module Lolita
     end
 
     class Configuration
-      attr_reader :klass, :attributes, :translation_class
+      attr_reader :klass, :attributes, :translation_class, :options
       alias :translation_attributes :attributes
 
       def initialize(base_klass, *args, &block)
@@ -22,19 +22,30 @@ module Lolita
         end
       end
 
+      def association_name
+        options[:association_name] || :translations
+      end
 
-      def method_missing method_name, *args, &block
-        # if options.has_key?(method_name.to_sym)
-        #   options[method_name.to_sym]
-        # else
-        #   super
-        # end
+      def locale_field_name
+        options[:locale_field_name] || :default_locale
+      end
+
+      def association_key
+        options[:association_key] || :"#{demodulized_class_name}_id"
+      end
+
+      def table_name
+        options[:table_name] || "#{klass.table_name}_translations"
+      end
+
+      def demodulized_class_name
+        klass.to_s.demodulize.underscore
       end
 
       private
-
+      
       def build_translation_class
-        @builder            = Lolita::Translation::TranslationClassBuilder.new(self.klass)
+        @builder            = Lolita::Translation::TranslationClassBuilder.new(self.klass, self)
         @translation_class  = @builder.build_class
         @builder.override_attributes(@attributes)
       end

@@ -1,64 +1,53 @@
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 require 'lolita'
-# require 'lolita-translation/modules'
-# require 'lolita-translation/model'
-# require 'lolita-translation/configuration'
-# if Lolita.rails3?
-#   require 'lolita-translation/rails'
-# end
+
 
 module Lolita
+  # Lolita::Translation is module for all classes and module for data translation in Lolita. 
+  # It have #locales method, that is is used to get all configured locales or all available locales.
   module Translation
+
+    def self.locales
+      unless @configuration
+        defined_locales = Lolita.locales.any? && Lolita.locales || ::I18n.available_locales
+        @configuration = Lolita::Translation::Locales.new(defined_locales)
+      end
+      @configuration
+    end
 
     def self.load!
       load_base!
       load_orm!
+      load_lolita_extensions!
+      if Lolita.rails?
+        load_rails_engine!
+      end
     end
 
     def self.load_base!
       require 'lolita-translation/version'
       require 'lolita-translation/errors'
+      require 'lolita-translation/utils'
       require 'lolita-translation/configuration'
+      require 'lolita-translation/locales'
       require 'lolita-translation/translation_class_builder'
       require 'lolita-translation/record'
     end
 
     def self.load_orm!
+      require 'lolita-translation/migrator'
       require 'lolita-translation/orm/mixin'
     end
 
-    # def self.included(base_class)
-    #   base_class.extend(Lolita::Translation::SingletonMethods)
-    # end
+    def self.load_lolita_extensions!
+      require 'lolita-translation/lolita/tab_extension'
+    end
 
-    # class << self
-    #   # Determine whether tab is translatable. When there is one or more fields in tab, that are defined with #translates.
-    #   def translatable?(tab)
-    #     fields = tab.fields.reject{|field|
-    #       field.dbi!=tab.dbi
-    #     } 
-    #     tab.dbi.klass.respond_to?(:translation_attrs) &&
-    #     tab.dbi.klass.respond_to?(:translations) && (fields.map(&:name) & tab.dbi.klass.translation_attrs).any?
-    #   end
-
-    #   # Create nested form configuration for views.
-    #   def create_translations_nested_form(resource,tab)
-    #     resource.build_nested_translations 
-    #     nested_form = Lolita::Configuration::NestedForm.new(tab,:translations) 
-    #     nested_form.expandable = false
-    #     nested_form.field_style = :normal
-        
-    #     fields = tab.fields.reject{|field|
-    #       !resource.class.translation_attrs.include?(field.name.to_sym)
-    #     }
-    #     fields << Lolita::Configuration::Factory::Field.add(nested_form.dbi,:locale,:string, :builder => :hidden)
-    #     nested_form.fields=fields
-    #     nested_form
-    #   end
-    # end
+    def self.load_rails_engine!
+      require 'lolita-translation/rails'
+    end
+    
   end
 end
 
 Lolita::Translation.load!
-
-#Lolita.add_module Lolita::Translation
