@@ -117,6 +117,19 @@ describe "Integration with ActiveRecord" do
       end
     end
  
+    it "should create translations for object" do 
+      new_cat = Category.create({
+        :name => "cat_name",
+        :original_locale => :en,
+        :translations_attributes => [
+          {:name => "translation-lv", :locale => "lv"},
+          {:name => "translation-fr", :locale => "fr"}
+        ]
+      })
+      new_cat.errors.should be_empty
+      new_cat.translations.should have(2).items
+    end
+
     it "should save translation as nested attributes" do 
       category.translations.should be_empty
       category.update_attributes(:translations_attributes => [
@@ -148,6 +161,7 @@ describe "Integration with ActiveRecord" do
       transl1.save
       transl1.errors.should be_empty
       transl2 = CategoryTranslation.create(:name => "translation-fr", :locale => "fr")
+      transl2.update_attributes(:name => "updated-translation-fr")
       transl2.errors.keys.should include(:"category")
     end
 

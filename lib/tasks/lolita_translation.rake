@@ -1,4 +1,5 @@
 require 'lolita-translation'
+require 'rake'
 
 namespace :lolita_translation do 
   desc "Synca all tables at once"

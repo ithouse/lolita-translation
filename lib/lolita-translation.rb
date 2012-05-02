@@ -19,7 +19,7 @@ module Lolita
       load_base!
       load_orm!
       load_lolita_extensions!
-      if Lolita.rails?
+      if Lolita.rails3?
         load_rails_engine!
       end
     end

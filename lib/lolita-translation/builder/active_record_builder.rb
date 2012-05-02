@@ -25,8 +25,6 @@ module Lolita
           add_ar_klass_attr_accessible(attributes + default_attributes)
           expanded_attributes = attributes.inject({}){|hsh,attribute| 
             hsh[attribute] = attribute 
-            #TODO should I keep this or replace with record.in block for each field rendering?
-            #hsh[:"#{attribute}_before_type_cast"] = attribute 
             hsh
           }
           super(expanded_attributes)
@@ -55,7 +53,7 @@ module Lolita
             :presence => true, 
             :uniqueness => {:scope => association_key},
           })
-          klass.validates(association_name, :presence => true)
+          klass.validates(association_name, :presence => true, :on => :update)
           klass.validates_each(:locale) do |record, attr, value|
             original_record = record.send(ar_translation_builder.association_name)
             if original_record && original_record.default_locale.to_s == value.to_s 
