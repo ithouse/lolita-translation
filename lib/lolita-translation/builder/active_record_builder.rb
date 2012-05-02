@@ -35,7 +35,7 @@ module Lolita
         private
 
         def default_attributes
-          [:locale]
+          [:locale, association_key.to_sym]
         end
 
         def add_ar_klass_attr_accessible attributes
