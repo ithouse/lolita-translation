@@ -21,6 +21,9 @@ describe Lolita::Translation::Record do
 
   describe Lolita::Translation::Record::ARRecord do 
     let(:ar_klass){ Lolita::Translation::Record::ARRecord }
+    before(:each) do 
+      ar_klass.any_instance.stub(:locale_field).and_return("default_locale")
+    end
 
     it "should return default locale from db if there is field defined or system default locale" do 
       ar_record = double("ar")
@@ -41,6 +44,17 @@ describe Lolita::Translation::Record do
       ar_record.stub(:attributes).and_return({"name" => "Name"})
       rec = ar_klass.new(ar_record)
       rec.locale.should eq(:lv)
+    end
+
+    it "should retrun default locale when locale column is blank" do 
+       I18n.locale = :ru
+      ar_record = double("ar")
+      ar_class = double("AR")
+      ar_record.stub(:class).and_return(ar_class)
+      ar_class.stub(:column_names).and_return(["name"])
+      ar_record.stub(:attributes).and_return({"name" => "Name", "default_locale" => ""})
+      rec = ar_klass.new(ar_record)
+      rec.locale.should eq(:ru)
     end
   end
 
@@ -69,4 +83,31 @@ describe Lolita::Translation::Record do
     obj.build_nested_translations
   end
 
+  describe "#in" do 
+    let(:rec){double("record")}
+
+    before(:each) do 
+      ::I18n.available_locales = [:lv,:ru,:en]
+      I18n.locale = :lv
+    end
+
+    it "should switch record #defaut_locale to given value" do 
+      obj = klass.new(rec)
+      obj.orm_wrapper.should_receive(:attribute).with(:name)
+      obj.attribute(:name)
+      obj.in(:ru)
+      obj.orm_wrapper.should_receive(:translated_attribute).with(:name, :locale => :ru)
+      obj.attribute(:name)
+    end
+
+    it "should switch record locale within block and back after block" do 
+      obj = klass.new(rec)
+      obj.in(:ru) do 
+        obj.orm_wrapper.should_receive(:translated_attribute).with(:name, :locale => :ru)
+        obj.attribute(:name)
+      end
+      obj.orm_wrapper.should_receive(:attribute).with(:name)
+      obj.attribute(:name)
+    end
+  end
 end

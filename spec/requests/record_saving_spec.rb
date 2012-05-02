@@ -27,7 +27,6 @@ describe "In order to internationalize all content I can enter information in an
     fill_in "post_body", :with => "ru-body"
     click_save_btn
     visit "/lolita/posts?locale=lv"
-    page.find("body")
     page.should have_content("ru-title")
     page.should have_content("ru-body")
   end
@@ -59,7 +58,6 @@ describe "In order to internationalize all content I can enter information in an
     page.execute_script(%Q{$(".tab-language-switch li[data-locale='lv']").click()})
     page.fill_in("Name",:with => "lv-name")
     click_save_btn
-    page.find("body")
     page.should have_content("lv-name")
   end
 end

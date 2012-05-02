@@ -43,5 +43,10 @@ describe Lolita::Translation::ORM do
       obj = klass.new
       obj.should respond_to(:original_locale)
     end
+
+    it "should provide #original_locale=" do 
+      obj = klass.new
+      obj.should respond_to(:original_locale=)
+    end
   end
 end

@@ -37,8 +37,16 @@ module Lolita
           translation_record.default_locale
         end
 
+        def original_locale=(value)
+          translation_record.default_locale = value
+        end
+
         def build_nested_translations
           translation_record.build_nested_translations
+        end
+
+        def in(locale,&block)
+          translation_record.in(locale,&block) 
         end
 
       end

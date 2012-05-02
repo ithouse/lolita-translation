@@ -25,7 +25,8 @@ module Lolita
           add_ar_klass_attr_accessible(attributes + default_attributes)
           expanded_attributes = attributes.inject({}){|hsh,attribute| 
             hsh[attribute] = attribute 
-            hsh[:"#{attribute}_before_type_cast"] = attribute 
+            #TODO should I keep this or replace with record.in block for each field rendering?
+            #hsh[:"#{attribute}_before_type_cast"] = attribute 
             hsh
           }
           super(expanded_attributes)

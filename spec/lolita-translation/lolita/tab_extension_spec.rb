@@ -36,4 +36,17 @@ describe "Lolita tab extension" do
     category.translations.should have(I18n.available_locales.size - 1).items
     form.fields.should have(1).item
   end
+
+  it "should add #original_locale field to original tab" do 
+    c_class = Class.new(ActiveRecord::Base)
+    Object.const_set(:Product,c_class)
+    c_class.class_eval do 
+      include Lolita::Configuration
+      include Lolita::Translation
+      translate :name
+      lolita
+    end
+    tab = c_class.lolita.tabs.first
+    tab.fields.detect{|f| f.name == :original_locale}.should_not be_nil
+  end
 end 

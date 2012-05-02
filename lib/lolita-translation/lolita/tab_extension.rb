@@ -19,17 +19,23 @@ module Lolita
           def build_form(resource) 
             resource.build_nested_translations 
             nested_form = create_translations_nested_form(resource)
-            add_default_locale_field(resource)
             nested_form 
+          end
+
+          def add_original_locale_field(fields)
+            if is_dbi_klass_translatable? && !exist_original_locale_field?(fields)
+              locale_field = Lolita::Configuration::Factory::Field.add(dbi, :original_locale, :string, :builder => :hidden)
+              fields << locale_field 
+            end
           end
 
           private
 
           def create_translations_nested_form(resource)
-            nested_form = Lolita::Configuration::NestedForm.new(tab, translations_association_name) 
-            nested_form.expandable = false
+            nested_form             = Lolita::Configuration::NestedForm.new(tab, translations_association_name) 
+            nested_form.expandable  = false
             nested_form.field_style = :normal
-            nested_form.fields = fields_for_translation_nested_form(nested_form)
+            nested_form.fields      = fields_for_translation_nested_form(nested_form)
             nested_form
           end
 
@@ -42,10 +48,9 @@ module Lolita
             t_fields
           end
 
-          def add_default_locale_field resource
-            if resource.respond_to?(:"#{locale_field_name}=")
-              locale_field = Lolita::Configuration::Factory::Field.add(dbi, locale_field_name, :string, :builder => :hidden)
-              tab.fields << locale_field 
+          def exist_original_locale_field?(fields)
+            !!fields.detect do |field|
+              field.name == :original_locale
             end
           end
 
@@ -81,6 +86,11 @@ module Lolita
             }.map(&:name)
           end
 
+        end
+
+        def fields
+          translation_tab_extension.add_original_locale_field(@fields)
+          @fields
         end
 
         def translatable?

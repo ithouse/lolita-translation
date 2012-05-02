@@ -20,10 +20,14 @@ end
 
 Lolita::Hooks.component(:"/lolita/configuration/tab/fields").around do
   tab = self.component_locals[:tab]
+  content = nil
+  resource.in(resource.original_locale) do 
+    content = let_content
+  end
   if tab.translatable?
     self.send(:render_component,"lolita/translation",:language_wrap, {
       :tab => tab, 
-      :content => let_content, 
+      :content => content, 
       :active => true,
       :translation_locale => resource.original_locale
     })

@@ -6,14 +6,16 @@ module Lolita
   module Translation
 
     class Record
-      DEFAULT_LOCALE_STORAGE_FIELD = "default_locale"
-
       class AbstractRecord
         attr_reader :orm_record
 
         def initialize(orm_record,configuration = nil)
           @configuration  = configuration
           @orm_record     = orm_record
+        end
+
+        def default_locale=(value)
+          nil
         end
 
         def locale
@@ -51,7 +53,7 @@ module Lolita
         end
 
         def locale_field
-          DEFAULT_LOCALE_STORAGE_FIELD
+          @configuration && @configuration.locale_field_name.to_s
         end
 
         def translation_string(str,attr_name)
@@ -65,9 +67,17 @@ module Lolita
       end
 
       class ARRecord < AbstractRecord
+        def default_locale=(value)
+          if has_locale_column?
+            orm_record.send(:"#{locale_field}=",value)
+          else
+            super
+          end
+        end
+
         def locale
-          if orm_record.class.column_names.include?(locale_field)
-            orm_record.attributes[locale_field]
+          if has_locale_column? and value = orm_record.attributes[locale_field] and value.to_s.size > 0
+            value
           else
             super
           end 
@@ -101,6 +111,10 @@ module Lolita
 
         private
 
+        def has_locale_column?
+          orm_record.class.column_names.include?(locale_field)
+        end
+
         def translations
           orm_record.translations
         end
@@ -119,17 +133,18 @@ module Lolita
       attr_reader :original_record, :default_locale, :orm_wrapper
 
       def initialize(original_record, configuration = nil)
-        @configuration    = configuration
-        @original_record  = original_record
-        @orm_wrapper      = get_orm_wrapper
-        @default_locale   = @orm_wrapper.locale
+        @configuration          = configuration
+        @original_record        = original_record
+        @orm_wrapper            = get_orm_wrapper
+        @default_locale         = @orm_wrapper.locale
+        @record_current_locale  = nil
       end
 
       def attribute(name)
-        if default_locale.to_s == system_current_locale.to_s
+        if default_locale.to_s == current_locale.to_s
           @orm_wrapper.attribute(name)
         else
-          @orm_wrapper.translated_attribute(name, :locale => system_current_locale)
+          @orm_wrapper.translated_attribute(name, :locale => current_locale)
         end
       end
 
@@ -145,11 +160,27 @@ module Lolita
         end
       end
 
+      def default_locale=(value)
+        @orm_wrapper.default_locale = value
+      end 
+
+      def in(locale)
+        old_locale = @record_current_locale
+        @record_current_locale = locale
+        if block_given?
+          yield
+          @record_current_locale = old_locale
+        end
+      end
 
       private
 
       def available_locales
         ::I18n.available_locales
+      end
+
+      def current_locale
+        @record_current_locale || system_current_locale
       end
 
       def system_current_locale
