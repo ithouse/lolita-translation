@@ -27,9 +27,7 @@ module Lolita
 
       def build_class
         if builder
-          builder.build_klass
-          builder.call_klass_class_methods
-          builder.update_base_klass
+          builder.build
           builder.klass
         else
           raise Lolita::Translation::NoBuilderForClassError.new(klass)

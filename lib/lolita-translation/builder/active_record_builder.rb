@@ -6,17 +6,14 @@ module Lolita
     module Builder
       class ActiveRecordBuilder < Lolita::Translation::Builder::AbstractBuilder
 
-        def build_klass
-          create_klass(ActiveRecord::Base)
+        def initialize base_klass, configuration = nil
+          super(base_klass,configuration, ActiveRecord::Base)
         end
 
-        def call_klass_class_methods
+        def build
           add_ar_klass_class_methods
           add_ar_klass_associations
           add_ar_klass_validations
-        end
-
-        def update_base_klass
           call_base_klass_class_methods
           add_validations_to_base_klass
         end
@@ -43,21 +40,25 @@ module Lolita
         end
 
         def add_ar_klass_associations
-          klass.belongs_to association_name, :inverse_of => translations_association_name
+          if self.configuration
+            klass.belongs_to association_name, :inverse_of => translations_association_name
+          end
         end
 
         def add_ar_klass_validations
-          ar_translation_builder = self
+          if self.configuration
+            ar_translation_builder = self
 
-          klass.validates(:locale,{
-            :presence => true, 
-            :uniqueness => {:scope => association_key},
-          })
-          klass.validates(association_name, :presence => true, :on => :update)
-          klass.validates_each(:locale) do |record, attr, value|
-            original_record = record.send(ar_translation_builder.association_name)
-            if original_record && original_record.default_locale.to_s == value.to_s 
-              record.errors.add(attr, 'is used as default locale')
+            klass.validates(:locale,{
+              :presence => true, 
+              :uniqueness => {:scope => association_key},
+            })
+            klass.validates(association_name, :presence => true, :on => :update)
+            klass.validates_each(:locale) do |record, attr, value|
+              original_record = record.send(ar_translation_builder.association_name)
+              if original_record && original_record.default_locale.to_s == value.to_s 
+                record.errors.add(attr, 'is used as default locale')
+              end
             end
           end
         end
@@ -72,13 +73,15 @@ module Lolita
         end
 
         def call_base_klass_class_methods
-          base_klass.has_many(translations_association_name, {
-            :class_name => class_name, 
-            :foreign_key => association_key, 
-            :dependent => :destroy,
-            :inverse_of => association_name
-          })
-          base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
+          if self.configuration
+            base_klass.has_many(translations_association_name, {
+              :class_name => class_name, 
+              :foreign_key => association_key, 
+              :dependent => :destroy,
+              :inverse_of => association_name
+            })
+            base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
+          end
         end
 
         def nested_attributes_rejection_proc

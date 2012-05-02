@@ -1,3 +1,4 @@
+require 'lolita-translation/translation_class_builder'
 module Lolita
   module Translation
 

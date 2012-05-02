@@ -14,6 +14,7 @@ describe Lolita::Translation::Builder::AbstractBuilder do
   end
 
   it "should have @base_klass attribute" do 
+    set_class_name(some_class)
     klass.new(some_class).base_klass.should eq(some_class)
   end
 
@@ -23,37 +24,44 @@ describe Lolita::Translation::Builder::AbstractBuilder do
   end
 
   it "should return class name like <Scoped::ClassName>Translation for class name 'Scoped::ClassName'" do 
-    set_class_name(some_class,"Scoped::ClassName")
-    klass.new(some_class).class_name.should eq("Scoped::ClassNameTranslation")
+    begin
+      Object.const_set(:Scoped,Class.new)
+      set_class_name(some_class,"Scoped::ClassName")
+      klass.new(some_class).class_name.should eq("Scoped::ClassNameTranslation")
+    ensure
+      Object.send(:remove_const, :Scoped)
+    end
   end
 
   it "should create class with scoped name" do 
-    Object.const_set(:Scoped,Class.new)
-    set_class_name(some_class,"Scoped::OtherClassName")
-    klass.new(some_class).create_klass
+    begin
+      Object.const_set(:Scoped,Class.new)
+      set_class_name(some_class,"Scoped::OtherClassName")
+      klass.new(some_class).klass.name.should eq("Scoped::OtherClassNameTranslation")
+    ensure
+      Object.send(:remove_const, :Scoped)
+    end
   end
 
   it "should show warning when method that should be implemented in concrete builder is not implemented yet" do 
+    set_class_name(some_class)
     ab_builder = klass.new(some_class)
     expect{
-      ab_builder.build_klass
+      ab_builder.build
     }.not_to raise_error
-    ab_builder.should_receive(:implementation_warn).exactly(3).times
-    ab_builder.build_klass
-    ab_builder.call_klass_class_methods
-    ab_builder.update_base_klass
+    ab_builder.should_receive(:implementation_warn).once
+    ab_builder.build
   end
 
-  it "should have #create_klass that create new empty class with class name" do 
+  it "should create new class on initialization" do 
     set_class_name(some_class)
-    klass.new(some_class).create_klass.to_s.should eq("SomeClassTranslation")
+    klass.new(some_class).klass.to_s.should eq("SomeClassTranslation")
   end
 
-  it "#create_klass should accept superclass as optional argument" do 
+  it "should accept superclass as third argument for new" do
     set_class_name(some_class)
-    builder = klass.new(some_class)
-    super_class = Class.new
-    builder.create_klass(super_class)
-    builder.klass.superclass.should eq(super_class)
+    superclass = Class.new
+    builder = klass.new(some_class,nil,superclass)
+    builder.klass.superclass.should eq(superclass)
   end
 end
