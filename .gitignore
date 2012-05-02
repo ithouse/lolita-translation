@@ -2,6 +2,7 @@ Gemfile.lock
 spec/database.log
 # rcov generated
 coverage
+coverage.data
 
 # rdoc generated
 rdoc
