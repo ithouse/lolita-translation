@@ -23,7 +23,7 @@ module Lolita
           end
 
           def add_original_locale_field(fields)
-            if is_dbi_klass_translatable? && !exist_original_locale_field?(fields)
+            if is_dbi_klass_translatable? && !exist_original_locale_field?(fields) && tab_has_translatable_fields?(fields)
               locale_field = Lolita::Configuration::Factory::Field.add(dbi, :original_locale, :string, :builder => :hidden)
               fields << locale_field 
             end
@@ -58,8 +58,8 @@ module Lolita
             (dbi.klass.respond_to?(:translations_configuration) && dbi.klass.respond_to?(:translate))
           end
 
-          def tab_has_translatable_fields?
-            (collect_possibly_translateble_fields & dbi_klass_translation_attributes).any?
+          def tab_has_translatable_fields?(fields = nil)
+            (collect_possibly_translateble_fields(fields) & dbi_klass_translation_attributes).any?
           end
 
           def dbi_klass_translation_attributes
@@ -80,8 +80,8 @@ module Lolita
           end
 
 
-          def collect_possibly_translateble_fields
-            tab.fields.reject{|field|
+          def collect_possibly_translateble_fields(fields = nil)
+            (fields || tab.fields).reject{|field|
               field.dbi != dbi
             }.map(&:name)
           end

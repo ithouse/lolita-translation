@@ -2,6 +2,15 @@ module LolitaTranslation
   class Engine < Rails::Engine
 
   end
+
+  class Railtie < Rails::Railtie
+    railtie_name :lolita_translation
+
+    rake_tasks do
+      load "tasks/lolita_translation.rake"
+    end
+  end
+
 end
 
 Lolita::Hooks.component(:"/lolita/configuration/tab/error_msg").before do
@@ -13,7 +22,7 @@ end
 
 Lolita::Hooks.component(:"/lolita/configuration/tab/fields").after do
   tab = self.component_locals[:tab]
-  if tab.translatable?
+  if tab.translatable?  
     self.render_component tab.build_translations_nested_form(self.resource)
   end
 end

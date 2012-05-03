@@ -6,7 +6,7 @@ USE_RAILS = true
 # Set this true to use debugger, if your  ruby version supports debugger.
 USE_DEBUGGER = false
 # Set this to true to see HTML code coverage report
-SHOW_REPORT = false
+SHOW_REPORT = true
 
 
 require 'header'
