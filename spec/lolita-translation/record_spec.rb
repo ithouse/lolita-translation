@@ -75,11 +75,10 @@ describe Lolita::Translation::Record do
     rec.stub(:id).and_return(1)
 
     translations = double("translations")
-    translations.should_receive(:build).with({:locale => "ru", :record_id => 1})
+    translations.should_receive(:build).with({:locale => "ru"})
     rec.stub(:translations).and_return(translations)
 
     obj = klass.new(rec)
-    obj.orm_wrapper.stub(:association_key).and_return(:record_id)
     obj.build_nested_translations
   end
 

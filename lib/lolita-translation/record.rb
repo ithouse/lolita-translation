@@ -152,9 +152,6 @@ module Lolita
         available_locales.each do |locale|
           unless self.default_locale.to_s == locale.to_s 
             attributes = { :locale => locale.to_s }
-            unless @orm_wrapper.new_record?
-              attributes[@orm_wrapper.association_key] = original_record.id 
-            end
             original_record.translations.build(attributes) unless orm_wrapper.has_translation_for?(locale)
           end
         end
