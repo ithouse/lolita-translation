@@ -15,7 +15,7 @@ describe "lolita_translation:sync_tables" do
       include Lolita::Translation
       translate :body
     end
-    ActiveRecord::Base.connection.execute("DROP TABLE comments_translations")
+    ActiveRecord::Base.connection.execute("DROP TABLE comments_translations") rescue nil
   end
 
   after(:each) do 
