@@ -56,7 +56,7 @@ module Lolita
             klass.validates(association_name, :presence => true, :on => :update)
             klass.validates_each(:locale) do |record, attr, value|
               original_record = record.send(ar_translation_builder.association_name)
-              if original_record && original_record.default_locale.to_s == value.to_s 
+              if original_record && original_record.original_locale.to_s == value.to_s 
                 record.errors.add(attr, 'is used as default locale')
               end
             end

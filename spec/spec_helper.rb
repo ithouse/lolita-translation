@@ -4,9 +4,9 @@ ENV["ORM"] = "active_record"
 # Set this to true if you want to launch rails application
 USE_RAILS = true
 # Set this true to use debugger, if your  ruby version supports debugger.
-USE_DEBUGGER = false
+USE_DEBUGGER = true
 # Set this to true to see HTML code coverage report
-SHOW_REPORT = true
+SHOW_REPORT = false
 
 
 require 'header'
