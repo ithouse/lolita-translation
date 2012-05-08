@@ -52,6 +52,10 @@ module Lolita
           ::I18n.locale
         end
 
+        def system_default_locale
+          ::I18n.default_locale
+        end
+
         def locale_field
           @configuration && @configuration.locale_field_name.to_s
         end
@@ -76,11 +80,15 @@ module Lolita
         end
 
         def locale
-          if has_locale_column? and value = orm_record.attributes[locale_field] and value.to_s.size > 0
-            value
+          if has_locale_column? 
+            if value = orm_record.attributes[locale_field] and value.to_s.size > 0
+              value
+            else
+              super
+            end
           else
-            super
-          end 
+            system_default_locale
+          end  
         end
 
         def attribute(name)

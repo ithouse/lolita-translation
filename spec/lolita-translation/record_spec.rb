@@ -36,7 +36,7 @@ describe Lolita::Translation::Record do
     end
 
     it "should use default locale when there isn't field for that" do 
-      I18n.locale = :lv
+      I18n.default_locale = :lv
       ar_record = double("ar")
       ar_class = double("AR")
       ar_record.stub(:class).and_return(ar_class)
@@ -47,7 +47,7 @@ describe Lolita::Translation::Record do
     end
 
     it "should retrun default locale when locale column is blank" do 
-       I18n.locale = :ru
+      I18n.default_locale = :ru
       ar_record = double("ar")
       ar_class = double("AR")
       ar_record.stub(:class).and_return(ar_class)
