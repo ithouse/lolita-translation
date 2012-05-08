@@ -93,6 +93,9 @@ module Lolita
         def add_validations_to_base_klass
           if base_klass.column_names.include?("default_locale")
             base_klass.validates locale_field_name, :presence => true
+            base_klass.before_validation do 
+              self.default_locale ||= self.translation_record.system_current_locale
+            end
           end
         end
 

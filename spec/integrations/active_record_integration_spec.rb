@@ -59,7 +59,7 @@ describe "Integration with ActiveRecord" do
     end
 
     it "validation should fail when no location is given, but class accepts translation locale" do 
-      category = Category.create(:name => Faker::Name.first_name)
+      category = Category.create(:name => Faker::Name.first_name, :default_locale => "")
       category.errors.keys.should include(:default_locale)
     end
 

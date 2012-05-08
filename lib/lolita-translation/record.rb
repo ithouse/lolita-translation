@@ -178,6 +178,10 @@ module Lolita
         end
       end
 
+      def system_current_locale
+        ::I18n.locale
+      end
+      
       private
 
       def available_locales
@@ -186,10 +190,6 @@ module Lolita
 
       def current_locale
         @record_current_locale || system_current_locale
-      end
-
-      def system_current_locale
-        ::I18n.locale
       end
 
       def get_orm_wrapper
