@@ -101,6 +101,8 @@ describe "Integration with ActiveRecord" do
     let(:product){ Product.create(:name => "product_name", :description => "product_description") }
 
     before(:each) do 
+      I18n.locale = :en
+      I18n.default_locale = :lv
       Object.send(:remove_const, :Category) rescue nil
       Object.send(:remove_const, :Product) rescue nil
       klass = Class.new(ActiveRecord::Base)
@@ -177,6 +179,17 @@ describe "Integration with ActiveRecord" do
       transl2 = category.translations.create(:name => "translation-lv", :locale => "lv")
       transl1.errors.should be_empty
       transl2.errors.keys.should eq([:"locale"])
+    end
+
+    it "should use default locale for records without default locale field" do 
+      product.update_attributes(:translations_attributes => [
+        { :name => "product_name-ru", :locale => "ru"}
+      ])
+      product.name.should eq("product_name")
+      I18n.locale = :ru
+      product.name.should eq("product_name-ru")
+      I18n.locale = :en
+      product.name.should eq("product_name")
     end
   end
 
