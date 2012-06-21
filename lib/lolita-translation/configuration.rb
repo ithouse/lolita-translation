@@ -17,9 +17,11 @@ module Lolita
         @options            = (args.respond_to?(:last) && args.last.is_a?(Hash) && args.pop) || {}
         @klass              = base_klass
         @attributes         = args
-        build_translation_class
-        if block_given?
-          block.call(self)
+        if base_klass.table_exists?
+          build_translation_class
+          if block_given?
+            block.call(self)
+          end
         end
       end
 
