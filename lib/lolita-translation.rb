@@ -8,11 +8,11 @@ module Lolita
   module Translation
 
     def self.locales
-      unless @configuration
+      unless @locales
         defined_locales = Lolita.locales.any? && Lolita.locales || ::I18n.available_locales
-        @configuration = Lolita::Translation::Locales.new(defined_locales)
+        @locales = Lolita::Translation::Locales.new(defined_locales)
       end
-      @configuration
+      @locales
     end
 
     def self.load!

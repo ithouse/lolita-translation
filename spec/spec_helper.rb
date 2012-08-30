@@ -19,7 +19,7 @@ if ENV["ORM"] == "active_record"
 end
 
 if USE_DEBUGGER
-  require 'ruby-debug'
+  require 'debugger'
 end
 
 require 'logger'

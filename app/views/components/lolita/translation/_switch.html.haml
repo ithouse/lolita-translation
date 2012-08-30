@@ -1,4 +1,4 @@
 %ul{:class => "tab-language-switch", :id => "#{tab.name}_language_switch"}
-  - Lolita::Translation.locales.by_resource_locale(resource).each do |locale|
+  - resource.translations_configuration.locales.by_resource_locale(resource).each do |locale|
     %li{ :class => resource.original_locale.to_s == locale.name.to_s && "active" || "", :"data-locale" => locale.short_name, :"data-tab" => tab.name}= locale.humanized_short_name
 .clear

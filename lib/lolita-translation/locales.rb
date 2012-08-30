@@ -6,10 +6,8 @@ module Lolita
     class Locales
       include Enumerable
 
-      attr_reader :locale_names 
-
       def initialize(locale_names)
-        @locale_names = locale_names.sort
+        @locale_names = locale_names
       end
 
       def each
@@ -31,6 +29,15 @@ module Lolita
         end
       end
 
+      def locale_names
+        l_names = if @locale_names.respond_to?(:call)
+          @locale_names.call
+        else
+          @locale_names
+        end
+        l_names.sort
+      end
+
       def active
         self.detect{|locale| locale.active?}
       end
@@ -44,7 +51,7 @@ module Lolita
 
       def populate_locales!
         unless @locales 
-          @locales = @locale_names.map do |locale_name|
+          @locales = locale_names.map do |locale_name|
             Lolita::Translation::Locale.new(locale_name)
           end
         end

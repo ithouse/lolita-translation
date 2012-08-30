@@ -2,7 +2,16 @@ require 'spec_helper'
 ARSchema.connect!
 
 describe "Lolita tab extension" do 
-  let(:some_class){ Class.new }
+  let(:some_class) do 
+    Class.new do 
+      class << self
+        def table_exists?
+          true
+        end 
+      end
+    end
+  end
+
   let(:dbi) do 
     tdbi = double("dbi") 
     tdbi.stub(:klass).and_return(some_class)

@@ -29,6 +29,14 @@ module Lolita
         options[:association_name] || :translations
       end
 
+      def locales
+        if options[:locales] 
+          Lolita::Translation::Locales.new(options[:locales])
+        else
+          Lolita::Translation.locales
+        end
+      end
+
       def locale_field_name
         options[:locale_field_name] || :default_locale
       end

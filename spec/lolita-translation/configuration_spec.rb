@@ -5,7 +5,15 @@ require File.expand_path("lib/lolita-translation/errors")
 
 describe Lolita::Translation::Configuration do 
   let(:klass){Lolita::Translation::Configuration}
-  let(:some_class){Class.new}
+  let(:some_class) do 
+    Class.new do 
+      class << self
+        def table_exists?
+          true
+        end
+      end
+    end
+  end
 
   before(:each) do 
     Lolita::Translation::TranslationClassBuilder.any_instance.stub(:build_class).and_return("builder")
@@ -23,6 +31,35 @@ describe Lolita::Translation::Configuration do
   it "should have @translation_class attribute" do 
     Object.const_set(:Product,some_class)
     klass.new(some_class).translation_class.should eq("builder")
+  end
+
+  describe "locales" do 
+    before(:each) do 
+      Object.const_set(:Product,some_class)
+    end
+
+    after(:each) do 
+      Lolita::Translation.send(:remove_const,:Locales) rescue nil
+    end
+    it "can be received as option" do 
+      Lolita::Translation.const_set(:Locales, Class.new)
+      Lolita::Translation::Locales.should_receive(:new).with([:en,:ru]).and_return([:en,:ru])
+      config = klass.new(some_class, :locales => [:en, :ru])
+      config.locales.should == [:en,:ru]
+    end
+
+    it "should fall back to Lolita::Translation.locales when no locales are passed" do 
+      config = klass.new(some_class)
+      Lolita::Translation.stub(:locales).and_return([:lv,:ru])
+      config.locales.should eq(Lolita::Translation.locales)
+    end
+
+    it "can be as anonymous method" do 
+      Lolita::Translation.const_set(:Locales, Class.new)
+      Lolita::Translation::Locales.should_receive(:new).and_return(Proc.new{ [:lv,:ru] })
+      config = klass.new(some_class, :locales => Proc.new{ [:lv,:ru] })
+      config.locales.should eq([:lv,:ru])
+    end
   end
 
   it "should yield block with self when called with block" do 
