@@ -185,7 +185,7 @@ module Lolita
       private
 
       def available_locales
-        ::I18n.available_locales
+        @configuration.locales.locale_names
       end
 
       def current_locale

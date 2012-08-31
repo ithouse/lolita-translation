@@ -81,6 +81,7 @@ module Lolita
               :inverse_of => association_name
             })
             base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
+            base_klass.attr_accessible :translations_attributes
           end
         end
 
