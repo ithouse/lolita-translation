@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'ar_schema'
-
 ARSchema.connect!
 
 describe "Integration with ActiveRecord" do 
+
   before(:each) do 
     ActiveRecord::Base.connection.execute("DELETE FROM categories")
     ActiveRecord::Base.connection.execute("DELETE FROM products")
@@ -49,24 +49,21 @@ describe "Integration with ActiveRecord" do
     let(:category){Category.create(:name => "category_name", :default_locale => "en")}
 
     before(:each) do 
+      I18n.default_locale = :en
       Object.send(:remove_const, :Category) rescue nil
       klass = Class.new(ActiveRecord::Base)
       Object.const_set(:Category,klass)
       Category.class_eval do 
         include Lolita::Translation
+        attr_accessible :name, :default_locale
         translate :name
       end
-    end
-
-    it "validation should fail when no location is given, but class accepts translation locale" do 
-      category = Category.create(:name => Faker::Name.first_name, :default_locale => "")
-      category.errors.keys.should include(:default_locale)
     end
 
     it "should have default locale" do 
       category = Category.create(:name => Faker::Name.first_name, :default_locale => "en")
       I18n.default_locale = :lv
-      category.original_locale.should eq("en")
+      category.original_locale.to_s.should eq("en")
     end
 
     it "should have translations" do 
@@ -111,10 +108,12 @@ describe "Integration with ActiveRecord" do
       Object.const_set(:Product,product_klass)
       Category.class_eval do 
         include Lolita::Translation
+        attr_accessible :name, :default_locale
         translate :name
       end
       Product.class_eval do 
         include Lolita::Translation
+        attr_accessible :name, :default_locale
         translate :name, :description
       end
     end

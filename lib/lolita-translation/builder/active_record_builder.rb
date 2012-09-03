@@ -81,7 +81,7 @@ module Lolita
               :inverse_of => association_name
             })
             base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
-            base_klass.attr_accessible :translations_attributes
+            base_klass.attr_accessible :translations_attributes,  locale_field_name
           end
         end
 
@@ -92,10 +92,13 @@ module Lolita
         end
 
         def add_validations_to_base_klass
-          if base_klass.column_names.include?("default_locale")
+          if base_klass.column_names.include?(locale_field_name.to_s)
             base_klass.validates locale_field_name, :presence => true
             base_klass.before_validation do 
-              self.default_locale ||= self.translation_record.system_current_locale
+              def_locale = self.send(self.translations_configuration.locale_field_name)
+              unless def_locale
+                self.send(:"#{self.translations_configuration.locale_field_name}=",self.translation_record.system_current_locale)
+              end 
             end
           end
         end

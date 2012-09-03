@@ -69,7 +69,10 @@ describe Lolita::Translation::Record do
   end
 
   it "should build nested translations" do 
-    ::I18n.available_locales = [:lv,:ru]
+    config = double("configuration")
+    locales = double("locales")
+    locales.stub(:locale_names).and_return([:lv,:ru])
+    config.stub(:locales).and_return(locales)
     I18n.locale = :lv
     rec = double("record")
     rec.stub(:id).and_return(1)
@@ -78,7 +81,7 @@ describe Lolita::Translation::Record do
     translations.should_receive(:build).with({:locale => "ru"})
     rec.stub(:translations).and_return(translations)
 
-    obj = klass.new(rec)
+    obj = klass.new(rec,config)
     obj.build_nested_translations
   end
 

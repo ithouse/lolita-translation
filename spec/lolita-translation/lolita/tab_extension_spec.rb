@@ -42,7 +42,7 @@ describe "Lolita tab extension" do
     tab = Lolita::Configuration::Tab::Base.new(Lolita::DBI::Base.create(Product), :default)
     category = Product.new
     form = tab.build_translations_nested_form(category)
-    category.translations.should have(I18n.available_locales.size - 1).items
+    category.translations.should have(c_class.translations_configuration.locales.locale_names.size - 1).items
     form.fields.should have(1).item
   end
 

@@ -56,7 +56,7 @@ describe Lolita::Translation::Configuration do
 
     it "can be as anonymous method" do 
       Lolita::Translation.const_set(:Locales, Class.new)
-      Lolita::Translation::Locales.should_receive(:new).and_return(Proc.new{ [:lv,:ru] })
+      Lolita::Translation::Locales.should_receive(:new).and_return([:lv,:ru])
       config = klass.new(some_class, :locales => Proc.new{ [:lv,:ru] })
       config.locales.should eq([:lv,:ru])
     end
