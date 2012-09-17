@@ -36,13 +36,16 @@ module Lolita
             nested_form.expandable  = false
             nested_form.field_style = :normal
             nested_form.fields      = fields_for_translation_nested_form(nested_form)
+            if tab.dbi.klass.respond_to?(:lolita_translations_nested_form_builder)
+              nested_form.builder= tab.dbi.klass.lolita_translations_nested_form_builder
+            end
             nested_form
           end
 
           def fields_for_translation_nested_form(nested_form)
             t_attributes = dbi_klass_translation_attributes
-            t_fields = tab.fields.reject do|field|
-              !t_attributes.include?(field.name.to_sym)
+            t_fields = tab.fields.select do|field|
+              t_attributes.include?(field.name.to_sym) && field.dbi == tab.dbi
             end
             t_fields << Lolita::Configuration::Factory::Field.add(nested_form.dbi,:locale,:string, :builder => :hidden)
             t_fields

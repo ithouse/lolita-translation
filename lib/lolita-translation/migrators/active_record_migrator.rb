@@ -33,11 +33,11 @@ module Lolita
         end
 
         def change_table
-          removed_columns.inject(false) do |result,attribute|
+          any_column_removed = removed_columns.inject(false) do |result,attribute|
             ActiveRecord::Migration.remove_column(config.table_name, attribute)
             true
-          end ||
-          config.attributes.inject(false) do |result, attribute|
+          end
+          any_column_added = config.attributes.inject(false) do |result, attribute|
             if !translations_column(attribute)
               if col = column(attribute)
                 ActiveRecord::Migration.add_column(config.table_name, attribute, col.type)
@@ -46,6 +46,7 @@ module Lolita
             end
             result
           end
+          any_column_added || any_column_removed
         end
 
         def add_indexes
