@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_runtime_dependency(%q<lolita>, ["~> 3.2.0.rc.9"])
+  s.add_runtime_dependency(%q<lolita>, ["~> 3.2.0.rc.14"])
 
   s.add_development_dependency(%q<rails>, ["~> 3.2.3"])
   s.add_development_dependency(%q<rspec>, ["~> 2.9.0"])
