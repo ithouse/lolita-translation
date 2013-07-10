@@ -43,13 +43,13 @@ module Lolita
         def override_klass_attributes method_names
           method_names.each do |method_name, attribute|
             validate_attribute_method_and_attribute(method_name, attribute)
-            base_klass.instance_eval do 
-              define_method(method_name) do 
+            base_klass.instance_eval do
+              define_method(method_name) do
                 translation_record.attribute(attribute)
               end
             end
           end
-        end 
+        end
 
         private
 
@@ -59,7 +59,7 @@ module Lolita
 
         def validate_attribute_method_and_attribute(method_name, attribute)
           raise ArgumentError.new("#{method_name} is not valid attribute reader name") unless method_name
-          raise ArgumentError.new("#{attribute} is not valid attribute name") unless attribute 
+          raise ArgumentError.new("#{attribute} is not valid attribute name") unless attribute
         end
 
         def implementation_warn
@@ -100,4 +100,4 @@ module Lolita
 
     end
   end
-end 
+end

@@ -1,31 +1,26 @@
 require 'spec_helper'
 
-describe Lolita::Translation::Migrator do 
+describe Lolita::Translation::Migrator do
   let(:klass) { Lolita::Translation::Migrator }
-  
-  before(:each) do 
-    Object.send(:remove_const,:Comment) rescue nil
+
+  before(:each) do
     c_class = Class.new(ActiveRecord::Base)
-    Object.const_set(:Comment,c_class)
-    c_class.class_eval do 
+    stub_const('Comment',c_class)
+    c_class.class_eval do
       include Lolita::Translation
       translate :body
     end
   end
 
-  after(:each) do 
-    Object.send(:remove_const,:Comment) rescue nil
-  end
+  describe "Instance methods" do
 
-  describe "Instance methods" do 
-
-    it "should have klass and config attributes" do 
+    it "should have klass and config attributes" do
       migrator = klass.new(Comment)
       migrator.klass.should eq(Comment)
       migrator.config.should eq(Comment.translations_configuration)
     end
 
-    it "should raise error when #migrate called" do 
+    it "should raise error when #migrate called" do
       migrator = klass.new(Comment)
       expect{
         migrator.migrate
@@ -33,10 +28,10 @@ describe Lolita::Translation::Migrator do
     end
   end
 
-  describe "Class methods" do 
-    it "should create concrete migrator for AR" do 
+  describe "Class methods" do
+    it "should create concrete migrator for AR" do
       klass.create(Comment).should be_kind_of(Lolita::Translation::Migrators::ActiveRecordMigrator)
     end
   end
 
-end 
+end

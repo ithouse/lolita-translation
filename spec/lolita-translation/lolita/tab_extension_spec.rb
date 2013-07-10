@@ -32,7 +32,7 @@ describe "Lolita tab extension" do
 
   it "should provide tab with #build_translations_nested_form with resource" do 
     c_class = Class.new(ActiveRecord::Base)
-    Object.const_set(:Product,c_class)
+    stub_const('Product',c_class)
     c_class.class_eval do 
       include Lolita::Configuration
       include Lolita::Translation
@@ -48,7 +48,7 @@ describe "Lolita tab extension" do
 
   it "should add #original_locale field to original tab" do 
     c_class = Class.new(ActiveRecord::Base)
-    Object.const_set(:Product,c_class)
+    stub_const('Product',c_class)
     c_class.class_eval do 
       include Lolita::Configuration
       include Lolita::Translation

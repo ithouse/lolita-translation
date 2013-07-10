@@ -5,4 +5,5 @@ class Post < ActiveRecord::Base
   translate :title, :body
 
   lolita
+
 end

@@ -4,7 +4,7 @@ module Lolita
 
     def self.included(base)
       base.extend(Lolita::Translation::ORM::ClassMethods)
-      base.class_eval do 
+      base.class_eval do
         include Lolita::Translation::ORM::InstanceMethods
       end
     end
@@ -30,7 +30,7 @@ module Lolita
       end
 
       def locales
-        if options[:locales] 
+        if options[:locales]
           Lolita::Translation::Locales.new(options[:locales])
         else
           Lolita::Translation.locales
@@ -54,7 +54,7 @@ module Lolita
       end
 
       private
-      
+
       def build_translation_class
         @builder            = Lolita::Translation::TranslationClassBuilder.new(self.klass, self)
         @translation_class  = @builder.build_class
@@ -64,4 +64,4 @@ module Lolita
     end
 
   end
-end 
+end

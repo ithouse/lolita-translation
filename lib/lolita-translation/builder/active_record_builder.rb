@@ -20,8 +20,8 @@ module Lolita
 
         def override_klass_attributes(attributes)
           add_ar_klass_attr_accessible(attributes + default_attributes)
-          expanded_attributes = attributes.inject({}){|hsh,attribute| 
-            hsh[attribute] = attribute 
+          expanded_attributes = attributes.inject({}){|hsh,attribute|
+            hsh[attribute] = attribute
             hsh
           }
           super(expanded_attributes)
@@ -34,14 +34,14 @@ module Lolita
         end
 
         def add_ar_klass_attr_accessible attributes
-          klass.class_eval do 
+          klass.class_eval do
             attr_accessible :locale, *attributes
           end
         end
 
         def add_ar_klass_associations
           if self.configuration
-            klass.belongs_to association_name, :inverse_of => translations_association_name
+            klass.belongs_to association_name
           end
         end
 
@@ -50,13 +50,13 @@ module Lolita
             ar_translation_builder = self
 
             klass.validates(:locale,{
-              :presence => true, 
+              :presence => true,
               :uniqueness => {:scope => association_key},
             })
             klass.validates(association_name, :presence => true, :on => :update)
             klass.validates_each(:locale) do |record, attr, value|
               original_record = record.send(ar_translation_builder.association_name)
-              if original_record && original_record.original_locale.to_s == value.to_s 
+              if original_record && original_record.original_locale.to_s == value.to_s
                 record.errors.add(attr, 'is used as default locale')
               end
             end
@@ -65,8 +65,8 @@ module Lolita
 
         def add_ar_klass_class_methods
           ar_translation_builder = self
-          klass.singleton_class.instance_eval do 
-            define_method(:table_name) do 
+          klass.singleton_class.instance_eval do
+            define_method(:table_name) do
               ar_translation_builder.table_name
             end
           end
@@ -75,10 +75,9 @@ module Lolita
         def call_base_klass_class_methods
           if self.configuration
             base_klass.has_many(translations_association_name, {
-              :class_name => class_name, 
-              :foreign_key => association_key, 
-              :dependent => :destroy,
-              :inverse_of => association_name
+              :class_name => class_name,
+              :foreign_key => association_key,
+              :dependent => :destroy
             })
             base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
             base_klass.attr_accessible :translations_attributes,  locale_field_name
@@ -94,11 +93,11 @@ module Lolita
         def add_validations_to_base_klass
           if base_klass.column_names.include?(locale_field_name.to_s)
             base_klass.validates locale_field_name, :presence => true
-            base_klass.before_validation do 
+            base_klass.before_validation do
               def_locale = self.send(self.translations_configuration.locale_field_name)
               unless def_locale
                 self.send(:"#{self.translations_configuration.locale_field_name}=",self.translation_record.system_current_locale)
-              end 
+              end
             end
           end
         end

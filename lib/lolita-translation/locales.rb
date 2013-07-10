@@ -25,7 +25,7 @@ module Lolita
           else
             result.push(locale)
           end
-          result 
+          result
         end
       end
 
@@ -50,7 +50,7 @@ module Lolita
       end
 
       def populate_locales!
-        unless @locales 
+        unless @locales
           @locales = locale_names.map do |locale_name|
             Lolita::Translation::Locale.new(locale_name)
           end

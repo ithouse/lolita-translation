@@ -1,7 +1,6 @@
 $(function(){
-  $(".tab-language-switch li").live("click",function(){
+  $(".tab-language-switch li").on("click",function(){
     $(this).parent().children("li").removeClass("active");
-    //$(".tab-language-switch li").removeClass("active");
     $(this).addClass("active");
     var locale = $(this).data("locale"),
         tab_name = $(this).data("tab"),

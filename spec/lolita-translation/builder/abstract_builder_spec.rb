@@ -24,23 +24,15 @@ describe Lolita::Translation::Builder::AbstractBuilder do
   end
 
   it "should return class name like <Scoped::ClassName>Translation for class name 'Scoped::ClassName'" do 
-    begin
-      Object.const_set(:Scoped,Class.new)
-      set_class_name(some_class,"Scoped::ClassName")
-      klass.new(some_class).class_name.should eq("Scoped::ClassNameTranslation")
-    ensure
-      Object.send(:remove_const, :Scoped)
-    end
+    stub_const('Scoped',Class.new)
+    set_class_name(some_class,"Scoped::ClassName")
+    klass.new(some_class).class_name.should eq("Scoped::ClassNameTranslation")
   end
 
   it "should create class with scoped name" do 
-    begin
-      Object.const_set(:Scoped,Class.new)
-      set_class_name(some_class,"Scoped::OtherClassName")
-      klass.new(some_class).klass.name.should eq("Scoped::OtherClassNameTranslation")
-    ensure
-      Object.send(:remove_const, :Scoped)
-    end
+    stub_const('Scoped',Class.new)
+    set_class_name(some_class,"Scoped::OtherClassName")
+    klass.new(some_class).klass.name.should eq("Scoped::OtherClassNameTranslation")
   end
 
   it "should show warning when method that should be implemented in concrete builder is not implemented yet" do 

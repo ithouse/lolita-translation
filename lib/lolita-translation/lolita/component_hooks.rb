@@ -7,7 +7,7 @@ end
 
 Lolita::Hooks.component(:"/lolita/configuration/tab/fields").after do
   tab = self.component_locals[:tab]
-  if tab.translatable?  
+  if tab.translatable?
     self.render_component tab.build_translations_nested_form(self.resource)
   end
 end
@@ -16,12 +16,12 @@ Lolita::Hooks.component(:"/lolita/configuration/tab/fields").around do
   tab = self.component_locals[:tab]
   if tab.translatable?
     content = nil
-    resource.in(resource.original_locale) do 
+    resource.in(resource.original_locale) do
       content = let_content
     end
     self.send(:render_component,"lolita/translation",:language_wrap, {
-      :tab => tab, 
-      :content => content, 
+      :tab => tab,
+      :content => content,
       :active => true,
       :translation_locale => resource.original_locale
     })
@@ -34,8 +34,8 @@ Lolita::Hooks.component(:"/lolita/configuration/nested_form/fields").around do
   tab = self.component_locals[:nested_form].parent
   if tab.translatable? && current_form.object.respond_to?(:locale)
     self.send(:render_component,"lolita/translation",:language_wrap, {
-      :tab => tab, 
-      :content => let_content, 
+      :tab => tab,
+      :content => let_content,
       :active => false,
       :translation_locale => current_form.object.locale
     })

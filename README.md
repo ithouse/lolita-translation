@@ -6,7 +6,7 @@
     gem "lolita-translation"
 
 ### Usage
-    
+
 1. Add `include Lolita::Translation` in your model.
 2. Call `translate :title, :body` in your model and pass column names to translate.
 3. Add `Article.sync_translation_table!` to your `db/seeds.rb` and run it.
@@ -20,7 +20,7 @@ Translations table holds only translations, but not the original data from defau
 
     I18n.default_locale = :en
     I18n.locale = :lv
-    
+
     a = Article.create :title => "Title in EN"
     a.title # returns blank, because current locale is LV and there is no translation in it
     #=> ""
@@ -29,7 +29,7 @@ Translations table holds only translations, but not the original data from defau
     #=> "Title in EN"
     a.translations.create :title => "Title in LV", :locale => 'lv'
     I18n.locale = :lv
-    a.title 
+    a.title
     #=> "Title in LV"
 
 When a "find" is executed and current language is not the same as default language then `:translations` are added to `:includes` to pre fetch all translations.
@@ -41,6 +41,6 @@ The `ModelNameTranslation` class is created for you automaticly with all validat
 
 Inspired by http://github.com/dmitry/has_translations
 
-### License 
+### License
 
 Copyright © 2011 ITHouse. See LICENSE.txt for further details.

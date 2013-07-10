@@ -18,19 +18,8 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_runtime_dependency(%q<lolita>, ["~> 3.2.0.rc.14"])
-
-  s.add_development_dependency(%q<rails>, ["~> 3.2.3"])
-  s.add_development_dependency(%q<rspec>, ["~> 2.9.0"])
-  s.add_development_dependency(%q<rspec-rails>, ["~> 2.9.0"])
-  s.add_development_dependency(%q<ffaker>, ["~> 1"])
-  s.add_development_dependency(%q<capybara>, ["~> 1.1.2"])
-  s.add_development_dependency(%q<capybara-webkit>, ["~> 0.11.0"])
-  s.add_development_dependency(%q<cover_me>, ["~> 1.2.0"])
-  s.add_development_dependency(%q<sqlite3>, ["~> 1.3.6"])
-  s.add_development_dependency(%q<debugger>,[">0"])
-
+  s.add_runtime_dependency(%q<lolita>, ["~> 3.2"])
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.test_files    = `git ls-files -- {spec}/*`.split("\n")
   s.require_paths = ["lib"]
 end

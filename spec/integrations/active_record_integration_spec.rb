@@ -2,21 +2,21 @@ require 'spec_helper'
 require 'ar_schema'
 ARSchema.connect!
 
-describe "Integration with ActiveRecord" do 
+describe "Integration with ActiveRecord" do
 
-  before(:each) do 
-    ActiveRecord::Base.connection.execute("DELETE FROM categories")
-    ActiveRecord::Base.connection.execute("DELETE FROM products")
-  end
-  context "configuration defination" do 
+  # before(:each) do
+  #   ActiveRecord::Base.connection.execute("DELETE FROM categories")
+  #   ActiveRecord::Base.connection.execute("DELETE FROM products")
+  # end
+  context "configuration defination" do
 
-    before(:each) do 
+    before do
       Object.send(:remove_const, :Product) rescue nil
       klass = Class.new(ActiveRecord::Base)
       Object.const_set(:Product,klass)
     end
 
-    it "should have class method for translation configuration" do 
+    it "should have class method for translation configuration" do
       Product.class_eval do
         include Lolita::Translation
       end
@@ -25,17 +25,17 @@ describe "Integration with ActiveRecord" do
       Product.should.respond_to?(:translate)
     end
 
-    it "should create configuration when class is loaded with field names to translate" do  
-      Product.class_eval do 
+    it "should create configuration when class is loaded with field names to translate" do
+      Product.class_eval do
         include Lolita::Translation
         translate :name, :description
       end
       Product.translations_configuration.should be_kind_of(Lolita::Translation::Configuration)
     end
 
-    it "should accept block and yield configuration" do 
+    it "should accept block and yield configuration" do
       block_called = false
-      Product.class_eval do 
+      Product.class_eval do
         include Lolita::Translation
         translate :name, :description do |conf|
           block_called = true
@@ -45,35 +45,34 @@ describe "Integration with ActiveRecord" do
     end
   end
 
-  context "record" do 
+  context "record" do
     let(:category){Category.create(:name => "category_name", :default_locale => "en")}
 
-    before(:each) do 
+    before do
       I18n.default_locale = :en
       Object.send(:remove_const, :Category) rescue nil
       klass = Class.new(ActiveRecord::Base)
       Object.const_set(:Category,klass)
-      Category.class_eval do 
+      Category.class_eval do
         include Lolita::Translation
         attr_accessible :name, :default_locale
         translate :name
       end
     end
 
-    it "should have default locale" do 
-      category = Category.create(:name => Faker::Name.first_name, :default_locale => "en")
+    it "should have default locale" do
       I18n.default_locale = :lv
       category.original_locale.to_s.should eq("en")
     end
 
-    it "should have translations" do 
+    it "should have translations" do
       category.translations.should be_empty
       category.update_attributes(:name => "updated",:translations_attributes => [{:name => "translation-lv", :locale => "lv"}])
       category.errors.should be_empty
       category.translations.reload.should have(1).item
     end
 
-    it "should return translatable attribute in current locale" do 
+    it "should return translatable attribute in current locale" do
       I18n.default_locale = :lv
       I18n.locale = :lv
       category.name.should eq("category_name")
@@ -82,22 +81,22 @@ describe "Integration with ActiveRecord" do
       category.update_attributes(:name => "updated",:translations_attributes => [{:name => "translation-lv", :locale => "lv"}])
       I18n.locale = :lv
       category.name.should eq("translation-lv")
-      I18n.locale = :ru 
+      I18n.locale = :ru
       category.name.should eq("updated")
     end
 
-    it "should switch attribute to different locale" do 
+    it "should switch attribute to different locale" do
       category.name.should eq("category_name")
       category.update_attributes(:translations_attributes => [{:name => "translation-lv", :locale => "lv"}])
       category.name.in(:lv).should eq("translation-lv")
     end
   end
-  
+
   context "saving" do
     let(:category){Category.create(:name => "category_name", :default_locale => :en)}
     let(:product){ Product.create(:name => "product_name", :description => "product_description") }
 
-    before(:each) do 
+    before(:each) do
       I18n.locale = :en
       I18n.default_locale = :lv
       Object.send(:remove_const, :Category) rescue nil
@@ -106,19 +105,19 @@ describe "Integration with ActiveRecord" do
       Object.const_set(:Category,klass)
       product_klass = Class.new(ActiveRecord::Base)
       Object.const_set(:Product,product_klass)
-      Category.class_eval do 
+      Category.class_eval do
         include Lolita::Translation
         attr_accessible :name, :default_locale
         translate :name
       end
-      Product.class_eval do 
+      Product.class_eval do
         include Lolita::Translation
         attr_accessible :name, :default_locale
         translate :name, :description
       end
     end
- 
-    it "should create translations for object" do 
+
+    it "should create translations for object" do
       new_cat = Category.create({
         :name => "cat_name",
         :original_locale => :en,
@@ -131,7 +130,7 @@ describe "Integration with ActiveRecord" do
       new_cat.translations.should have(2).items
     end
 
-    it "should save translation as nested attributes" do 
+    it "should save translation as nested attributes" do
       category.translations.should be_empty
       category.update_attributes(:translations_attributes => [
         {:name => "translation-lv", :locale => "lv"},
@@ -141,7 +140,7 @@ describe "Integration with ActiveRecord" do
       category.translations.should have(2).items
     end
 
-    it "should save locale for record if it accepts it" do 
+    it "should save locale for record if it accepts it" do
       I18n.locale = :lv
       category.original_locale.should eq(:en)
       product.original_locale.should eq(:lv)
@@ -156,7 +155,7 @@ describe "Integration with ActiveRecord" do
       category.errors.keys.should include(:"translations.locale")
     end
 
-    it "translation record should be associated with original record" do 
+    it "translation record should be associated with original record" do
       transl1 = CategoryTranslation.new(:name => "translation-lv", :locale => "lv")
       transl1.category = category
       transl1.save
@@ -166,21 +165,21 @@ describe "Integration with ActiveRecord" do
       transl2.errors.keys.should include(:"category")
     end
 
-    it "should validate that locale is presented" do 
+    it "should validate that locale is presented" do
       transl1 = CategoryTranslation.new(:name => "translation-lv")
-      transl1.category = category 
+      transl1.category = category
       transl1.save
       transl1.errors.keys.should eq([:"locale"])
     end
 
-    it "should validate that locale is unique for each original record" do 
+    it "should validate that locale is unique for each original record" do
       transl1 = category.translations.create(:name => "translation-lv", :locale => "lv")
       transl2 = category.translations.create(:name => "translation-lv", :locale => "lv")
       transl1.errors.should be_empty
       transl2.errors.keys.should eq([:"locale"])
     end
 
-    it "should use default locale for records without default locale field" do 
+    it "should use default locale for records without default locale field" do
       product.update_attributes(:translations_attributes => [
         { :name => "product_name-ru", :locale => "ru"}
       ])
@@ -192,23 +191,23 @@ describe "Integration with ActiveRecord" do
     end
   end
 
-  context "migrating" do 
-    before(:each) do 
+  context "migrating" do
+    before(:each) do
       Object.send(:remove_const,:Comment) rescue nil
       c_class = Class.new(ActiveRecord::Base)
       Object.const_set(:Comment,c_class)
-      c_class.class_eval do 
+      c_class.class_eval do
         include Lolita::Translation
         translate :body
       end
       ActiveRecord::Base.connection.execute("DROP TABLE comments_translations") rescue nil
     end
 
-    after(:each) do 
+    after(:each) do
       Object.send(:remove_const,:Comment) rescue nil
     end
 
-    it "should sync translation table through migrations" do 
+    it "should sync translation table through migrations" do
       ActiveRecord::Base.connection.tables.should_not include("comments_translations")
       Comment.sync_translation_table!
       ActiveRecord::Base.connection.tables.should include("comments_translations")

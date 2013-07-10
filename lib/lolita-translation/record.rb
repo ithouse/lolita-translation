@@ -41,7 +41,7 @@ module Lolita
         def has_translation_for?(locale)
           nil
         end
-    
+
         private
 
         def adapter
@@ -80,7 +80,7 @@ module Lolita
         end
 
         def locale
-          if has_locale_column? 
+          if has_locale_column?
             if value = orm_record.attributes[locale_field] and value.to_s.size > 0
               value
             else
@@ -88,7 +88,7 @@ module Lolita
             end
           else
             system_default_locale
-          end  
+          end
         end
 
         def attribute(name)
@@ -128,14 +128,14 @@ module Lolita
         end
 
         def find_translation_by_locale given_locale
-          translations.detect{|translation| 
+          translations.detect{|translation|
             translation.locale.to_s == given_locale.to_s
           }
         end
       end
 
       class MongoidRecord < AbstractRecord
-        
+
       end
 
       attr_reader :original_record, :default_locale, :orm_wrapper
@@ -158,7 +158,7 @@ module Lolita
 
       def build_nested_translations
         available_locales.each do |locale|
-          unless self.default_locale.to_s == locale.to_s 
+          unless self.default_locale.to_s == locale.to_s
             attributes = { :locale => locale.to_s }
             original_record.translations.build(attributes) unless orm_wrapper.has_translation_for?(locale)
           end
@@ -167,7 +167,7 @@ module Lolita
 
       def default_locale=(value)
         @orm_wrapper.default_locale = value
-      end 
+      end
 
       def in(locale)
         old_locale = @record_current_locale
@@ -181,7 +181,7 @@ module Lolita
       def system_current_locale
         ::I18n.locale
       end
-      
+
       private
 
       def available_locales
@@ -199,7 +199,7 @@ module Lolita
           MongoidRecord.new(original_record,@configuration)
         else
           AbstractRecord.new(original_record,@configuration)
-        end 
+        end
       end
 
       def is_mongoid_record?
