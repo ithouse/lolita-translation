@@ -11,7 +11,6 @@ module Lolita
         end
 
         def build
-          add_ar_klass_class_methods
           add_ar_klass_associations
           add_ar_klass_validations
           call_base_klass_class_methods
@@ -20,6 +19,7 @@ module Lolita
 
         def override_klass_attributes(attributes)
           add_ar_klass_attr_accessible(attributes + default_attributes)
+          add_ar_klass_table_name(self.table_name)
           expanded_attributes = attributes.inject({}){|hsh,attribute|
             hsh[attribute] = attribute
             hsh
@@ -34,8 +34,16 @@ module Lolita
         end
 
         def add_ar_klass_attr_accessible attributes
+          ar_translation_builder = self
           klass.class_eval do
             attr_accessible :locale, *attributes
+            self.table_name = ar_translation_builder.table_name
+          end
+        end
+
+        def add_ar_klass_table_name name
+          klass.class_eval do
+            self.table_name = name
           end
         end
 
@@ -59,15 +67,6 @@ module Lolita
               if original_record && original_record.original_locale.to_s == value.to_s
                 record.errors.add(attr, 'is used as default locale')
               end
-            end
-          end
-        end
-
-        def add_ar_klass_class_methods
-          ar_translation_builder = self
-          klass.singleton_class.instance_eval do
-            define_method(:table_name) do
-              ar_translation_builder.table_name
             end
           end
         end

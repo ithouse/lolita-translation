@@ -3,7 +3,7 @@ require 'lolita'
 
 
 module Lolita
-  # Lolita::Translation is module for all classes and module for data translation in Lolita. 
+  # Lolita::Translation is module for all classes and module for data translation in Lolita.
   # It have #locales method, that is is used to get all configured locales or all available locales.
   module Translation
 
@@ -46,7 +46,7 @@ module Lolita
     def self.load_rails_engine!
       require 'lolita-translation/rails'
     end
-    
+
   end
 end
 
