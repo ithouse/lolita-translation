@@ -36,8 +36,18 @@ module Lolita
         def add_ar_klass_attr_accessible attributes
           ar_translation_builder = self
           klass.class_eval do
-            attr_accessible :locale, *attributes
+            if ar_translation_builder.send(:attr_accessible_required?, ar_translation_builder.base_klass)
+              attr_accessible :locale, *attributes
+            end
             self.table_name = ar_translation_builder.table_name
+          end
+        end
+
+        def attr_accessible_required? klass
+          if defined?(ActiveModel::ForbiddenAttributesProtection)
+            !klass.ancestors.include?(ActiveModel::ForbiddenAttributesProtection)
+          else
+            true
           end
         end
 
@@ -79,7 +89,9 @@ module Lolita
               :dependent => :destroy
             })
             base_klass.accepts_nested_attributes_for translations_association_name, :allow_destroy => true, :reject_if => nested_attributes_rejection_proc
-            base_klass.attr_accessible :translations_attributes,  locale_field_name
+            if attr_accessible_required? base_klass
+              base_klass.attr_accessible :translations_attributes, locale_field_name
+            end
           end
         end
 
