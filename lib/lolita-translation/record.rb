@@ -176,6 +176,7 @@ module Lolita
           yield
           @record_current_locale = old_locale
         end
+        original_record
       end
 
       def system_current_locale
