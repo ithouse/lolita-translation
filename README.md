@@ -36,6 +36,15 @@ Translations table holds only translations, but not the original data from defau
     a.title #returns record's title attribute in locale that's passed
     #=> "Title in LV"
 
+    a.in(:lv).title #returns record's title attribute in locale that's passed
+    #=> "Title in LV"
+
+    a.in(:lv) do |item|
+     item.title #returns record's title attribute in locale that's passed
+     #=> "Title in LV" 
+    end
+    # after block the default locale is switched back
+
 When a "find" is executed and current language is not the same as default language then `:translations` are added to `:includes` to pre fetch all translations.
 
 The `ModelNameTranslation` class is created for you automaticly with all validations for ranslated fields. Of course you can create it manualy for custom vlidations and other.

@@ -110,6 +110,16 @@ describe Lolita::Translation::Record do
       obj.orm_wrapper.should_receive(:attribute).with(:name)
       obj.attribute(:name)
     end
+
+    it "should yield record with given locale" do
+      obj = klass.new(rec)
+      obj.in(:ru) do |new_obj|
+        rec.should_receive(:name)
+        new_obj.name
+      end
+      obj.orm_wrapper.should_receive(:attribute).with(:name)
+      obj.attribute(:name)
+    end
   end
 
   require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')  

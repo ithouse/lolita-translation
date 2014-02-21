@@ -173,8 +173,10 @@ module Lolita
         old_locale = @record_current_locale
         @record_current_locale = locale
         if block_given?
-          yield
+          yield(self.original_record)
           @record_current_locale = old_locale
+        else
+          self.original_record
         end
       end
 
