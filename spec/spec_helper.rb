@@ -2,8 +2,6 @@
 # Now there are support only for "active_record"
 ENV["ORM"] = "active_record"
 
-require 'header'
-
 if ENV["ORM"] == "active_record"
   require 'ar_schema'
 end
@@ -15,6 +13,9 @@ unless ENV['CI']
 end
 
 require 'logger'
+
+require 'simplecov'
+SimpleCov.start
 
 # setup I18n
 I18n.available_locales = [:en,:lv,:ru,:fr]

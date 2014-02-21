@@ -10,6 +10,7 @@ group :test do
   gem 'selenium-webdriver', '~> 2.38.0'
   gem 'sqlite3', '~> 1.3.7'
   gem 'byebug'
-  gem 'cover_me'
+  gem 'simplecov'
   gem "coffee-rails"
+  gem "pry-byebug"
 end

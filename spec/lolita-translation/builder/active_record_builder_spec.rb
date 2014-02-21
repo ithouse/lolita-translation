@@ -1,4 +1,3 @@
-require 'header'
 require 'ar_schema'
 require File.expand_path("lib/lolita-translation/builder/active_record_builder")
 require File.expand_path("lib/lolita-translation/configuration")

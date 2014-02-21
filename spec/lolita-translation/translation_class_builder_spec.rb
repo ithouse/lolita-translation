@@ -1,4 +1,3 @@
-require 'header'
 require File.expand_path("lib/lolita-translation/translation_class_builder")
 require File.expand_path("lib/lolita-translation/errors")
 require 'ar_schema'

@@ -1,4 +1,3 @@
-require 'header'
 require File.expand_path("lib/lolita-translation/record")
 
 describe Lolita::Translation::Record do 
@@ -112,4 +111,6 @@ describe Lolita::Translation::Record do
       obj.attribute(:name)
     end
   end
+
+  require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')  
 end

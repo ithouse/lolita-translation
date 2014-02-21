@@ -1,4 +1,3 @@
-require 'header'
 require File.expand_path("lib/lolita-translation/builder/abstract_builder")
 
 describe Lolita::Translation::Builder::AbstractBuilder do 

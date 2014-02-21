@@ -1,4 +1,3 @@
-require 'header'
 require File.expand_path("lib/lolita-translation")
 
 describe Lolita::Translation do 
