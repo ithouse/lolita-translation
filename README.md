@@ -32,7 +32,8 @@ Translations table holds only translations, but not the original data from defau
     a.title
     #=> "Title in LV"
 
-    a.in(:lv).title #returns record's title attribute in locale that's passed
+    a.in(:lv) # switching locale to lv
+    a.title #returns record's title attribute in locale that's passed
     #=> "Title in LV"
 
 When a "find" is executed and current language is not the same as default language then `:translations` are added to `:includes` to pre fetch all translations.
