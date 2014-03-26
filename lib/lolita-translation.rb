@@ -1,6 +1,5 @@
-$:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
+$: << File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 require 'lolita'
-
 
 module Lolita
   # Lolita::Translation is module for all classes and module for data translation in Lolita.
@@ -19,7 +18,7 @@ module Lolita
       load_base!
       load_orm!
       load_lolita_extensions!
-      if Lolita.rails3?
+      if Lolita.rails?
         load_rails_engine!
       end
     end
