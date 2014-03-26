@@ -59,7 +59,7 @@ module Lolita
 
         def add_ar_klass_associations
           if self.configuration
-            klass.belongs_to association_name
+            klass.belongs_to association_name.to_sym
           end
         end
 
