@@ -1,9 +1,9 @@
 require 'lolita-translation'
 require 'rake'
 
-namespace :lolita_translation do 
+namespace :lolita_translation do
   desc "Synca all tables at once"
-  task :sync_tables do
+  task sync_tables: :environment do
     Lolita.mappings.each do |k,mapping|
       klass = mapping.to
       if klass && klass.respond_to?(:sync_translation_table!)
