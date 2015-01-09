@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_runtime_dependency(%q<lolita>, ["~> 3.2"])
+  s.add_runtime_dependency(%q<lolita>, [">= 3.2"])
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {spec}/*`.split("\n")
   s.require_paths = ["lib"]

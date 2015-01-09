@@ -1,6 +1,8 @@
 require 'lolita-translation'
 require 'rake'
 
+task :environment
+
 namespace :lolita_translation do
   desc "Synca all tables at once"
   task sync_tables: :environment do

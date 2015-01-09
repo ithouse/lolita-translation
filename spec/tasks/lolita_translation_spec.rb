@@ -21,7 +21,7 @@ describe "lolita_translation:sync_tables" do
     translations.should eq(%w(categories_translations posts_translations products_translations).sort)
     Lolita.mappings[:comment] = Lolita::Mapping.new(:comments)
     load(File.expand_path("lib/tasks/lolita_translation.rake"))
-    Rake.application["lolita_translation:sync_tables"].invoke()
+    Rake::Task["lolita_translation:sync_tables"].invoke
     translations.should eq(%w(categories_translations posts_translations comments_translations products_translations).sort)
   end
 end
