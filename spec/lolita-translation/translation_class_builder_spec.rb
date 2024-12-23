@@ -18,8 +18,8 @@ describe Lolita::Translation::TranslationClassBuilder do
     end
 
     it "should validate if there are concrete builder availabe" do 
-      klass.new(some_class).builder_available?.should be_false
-      klass.new(Class.new(ActiveRecord::Base)).builder_available?.should be_true
+      klass.new(some_class).builder_available?.should be_falsey
+      klass.new(Class.new(ActiveRecord::Base)).builder_available?.should be_truthy
     end
 
     it "should have builder when there is builder class available" do 

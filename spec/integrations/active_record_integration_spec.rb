@@ -41,7 +41,7 @@ describe "Integration with ActiveRecord" do
           block_called = true
         end
       end
-      block_called.should be_true
+      block_called.should be_truthy
     end
   end
 
@@ -55,7 +55,6 @@ describe "Integration with ActiveRecord" do
       Object.const_set(:Category,klass)
       Category.class_eval do
         include Lolita::Translation
-        attr_accessible :name, :default_locale
         translate :name
       end
     end
@@ -107,12 +106,10 @@ describe "Integration with ActiveRecord" do
       Object.const_set(:Product,product_klass)
       Category.class_eval do
         include Lolita::Translation
-        attr_accessible :name, :default_locale
         translate :name
       end
       Product.class_eval do
         include Lolita::Translation
-        attr_accessible :name, :default_locale
         translate :name, :description
       end
     end
@@ -142,7 +139,7 @@ describe "Integration with ActiveRecord" do
 
     it "should save locale for record if it accepts it" do
       I18n.locale = :lv
-      category.original_locale.should eq(:en)
+      category.original_locale.should eq('en')
       product.original_locale.should eq(:lv)
     end
 

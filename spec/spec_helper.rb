@@ -7,6 +7,7 @@ if ENV["ORM"] == "active_record"
 end
 
 require 'rails_helper'
+require 'rspec/collection_matchers'
 
 unless ENV['CI']
   require 'byebug'
@@ -17,12 +18,13 @@ require 'logger'
 require 'simplecov'
 SimpleCov.start
 
+Capybara.server = :webrick
+
 # setup I18n
 I18n.available_locales = [:en,:lv,:ru,:fr]
 I18n.default_locale = :lv
 I18n.locale = :en
 Lolita.locales = I18n.available_locales
-
 
 RSpec.configure do |config|
   config.before(:each) do

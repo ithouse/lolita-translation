@@ -3,15 +3,16 @@ source "http://rubygems.org"
 gemspec
 
 group :test do
-  gem 'rails', '~> 3.2.21'
-  gem 'lolita', '~> 4.0'
-  gem 'rspec-rails', '~> 2.14'
-  gem 'ffaker', '~> 1.16.2'
-  gem 'capybara', '~> 2.1'
+  gem 'rails', '~> 5.2'
+  gem 'lolita', git: 'https://github.com/ithouse/lolita', ref: '7f88ce59555940aaa46dd9fd8837a32891fc0280'
+  gem 'rspec-rails', '~> 3.7'
+  gem 'ffaker', '~> 1.0'
+  gem 'capybara', '~> 3.36'
   gem 'selenium-webdriver'
-  gem 'sqlite3', '~> 1.3.7'
+  gem 'sqlite3'
   gem 'byebug'
   gem 'simplecov'
   gem "coffee-rails"
   gem "pry-byebug"
+  gem 'rspec-collection_matchers'
 end
